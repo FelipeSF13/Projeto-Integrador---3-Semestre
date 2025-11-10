@@ -8,9 +8,17 @@ use Illuminate\Support\Facades\Route;
 //     return view('nome do index.blade.php SEM o .blade.php');
 // })->name('nome-da-rota');
 
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('index');
 })->name('index');
+
+Route::get('/cadastro', function () {
+    return view('cadastro');
+})->name('cadastro');
+
+Route::get('/login', function () {
+   return view('login');
+})->name('login');
 
 Route::get('/feminino', function () {
 return view('feminino');
@@ -28,17 +36,9 @@ Route::get('produto', function () {
     return view('detalhe-produto');
 })->name('produto');
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
 Route::get('/carrinho', function () {
     return view('carrinho');
 })->name('carrinho');
-
-Route::get('/cadastro', function () {
-    return view('cadastro');
-})->name('cadastro');
 
 Route::get('/adm-produto', function () {
     return view('admin_produtos');
