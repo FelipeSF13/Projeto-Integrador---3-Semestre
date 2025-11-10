@@ -28,6 +28,10 @@ Route::get('produto', function () {
     return view('detalhe-produto');
 })->name('produto');
 
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
 Route::get('/carrinho', function () {
     return view('carrinho');
 })->name('carrinho');
