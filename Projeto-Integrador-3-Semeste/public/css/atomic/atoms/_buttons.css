@@ -1,0 +1,31 @@
+/* css/atomic/atoms/_buttons.css */
+.btn {
+  cursor: pointer;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+.btn-dark {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  border-radius: 25px;
+  padding: 14px 30px;
+}
+.btn-dark:hover {
+  background-color: #333;
+}
+.btn-outline {
+  border: 1px solid var(--color-dark);
+  background-color: transparent;
+  color: var(--color-dark);
+  padding: 10px 40px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+.btn-outline:hover {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
