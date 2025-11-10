@@ -12,7 +12,7 @@
          <div class="admin-header-content container">
             <nav aria-label="breadcrumb" class="admin-breadcrumbs">
                 <ol>
-                    <li><a href="admin_dashboard">Painel</a></li> 
+                    <li><a href="{{ route('admin_dashboard') }}">Painel</a></li> 
                     <li><span>&gt;</span></li>
                     <li aria-current="page">Cadastrar Produtos</li> 
                 </ol>
@@ -40,9 +40,9 @@
             <p class="subtitle">Cadastramento de produtos</p>
 
             <nav class="admin-tabs">
-                <a href="admin_produtos.html">Em estoque</a> 
-                <a href="admin_usuarios.html">Usuários</a> 
-                <a href="admin_cadastrar_produto.html" class="active">Cadastrar Produtos</a> 
+                <a href="{{ route('admin_produtos') }}">Em estoque</a> 
+                <a href="{{ route('admin_usuarios') }}">Usuários</a> 
+                <a href="{{ route('admin_cadastrar_produto') }}" class="active">Cadastrar Produtos</a> 
             </nav>
 
 
@@ -89,7 +89,7 @@
 
                 <div class="form-actions">
                      <button type="submit" class="btn btn-primary">Salvar Produto</button>
-                     <a href="admin_produtos.html" class="btn btn-secondary">Cancelar</a> 
+                     <a href="{{ route('admin_produtos') }}" class="btn btn-secondary">Cancelar</a> 
                 </div>
             </form>
         </div>
@@ -97,6 +97,6 @@
 
 
 
-    <script src="js/script.js"></script> 
+    <script src="{{ asset('js/script.js') }}"></script> 
 </body>
 </html>

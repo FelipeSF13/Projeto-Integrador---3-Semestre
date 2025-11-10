@@ -41,9 +41,9 @@
             <p class="subtitle">Produtos em Estoque</p>
 
             <nav class="admin-tabs">
-                <a href="admin_produtos.html" class="active">Em estoque</a> 
-                <a href="admin_usuarios.html">Usuários</a> 
-                <a href="admin_cadastrar_produto.html">Cadastrar Produtos</a> 
+                <a href="{{ route('admin_produtos') }}" class="active">Em estoque</a> 
+                <a href="{{ route('admin_usuarios') }}">Usuários</a> 
+                <a href="{{ route('admin_cadastrar_produto') }}">Cadastrar Produtos</a> 
             </nav>
 
             <div class="admin-action-bar">
@@ -134,6 +134,6 @@
              </div>
     </main>
 
-    <script src="js/script.js"></script> 
+    <script src="{{ asset('js/script.js') }}"></script> 
 </body>
 </html>

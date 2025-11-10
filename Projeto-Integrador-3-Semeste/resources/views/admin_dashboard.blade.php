@@ -38,18 +38,18 @@
             <p class="subtitle">Selecione uma opção abaixo para gerenciar sua loja.</p>
 
             <div class="dashboard-navigation">
-                
-                <a href="admin_produtos.html" class="dashboard-link-card">
+
+                <a href="{{ route('admin_produtos') }}" class="dashboard-link-card">
                     <i class="fas fa-boxes fa-2x"></i> <span>Produtos em Estoque</span>
                     <p>Visualizar e gerenciar produtos existentes.</p>
                 </a>
 
-                <a href="admin_usuarios.html" class="dashboard-link-card">
+                <a href="{{ route('admin_usuarios') }}" class="dashboard-link-card">
                     <i class="fas fa-users fa-2x"></i> <span>Usuários Cadastrados</span>
                     <p>Verificar e administrar contas de usuários.</p>
                 </a>
 
-                <a href="admin_cadastrar_produto.html" class="dashboard-link-card">
+                <a href="{{ route('admin_cadastrar_produto') }}" class="dashboard-link-card">
                      <i class="fas fa-plus-circle fa-2x"></i> <span>Cadastrar Novo Produto</span>
                     <p>Adicionar novos itens ao catálogo da loja.</p>
                 </a>
@@ -58,6 +58,6 @@
         </div>
     </main>
 
-    <script src="js/script.js"></script> 
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

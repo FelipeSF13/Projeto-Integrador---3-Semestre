@@ -13,7 +13,7 @@
         <div class="admin-header-content container">
             <nav aria-label="breadcrumb" class="admin-breadcrumbs">
                 <ol>
-                    <li><a href="admin_dashboard.html">Painel</a></li> 
+                    <li><a href="{{ route('admin_dashboard') }}">Painel</a></li> 
                     <li><span>&gt;</span></li>
                     <li aria-current="page">Usuários Cadastrados</li> 
                 </ol>
@@ -38,9 +38,9 @@
             <h2>Usuários Cadastrados</h2>
 
             <nav class="admin-tabs">
-                <a href="admin_produtos.html">Em estoque</a> 
-                <a href="admin_usuarios.html" class="active">Usuários</a> 
-                <a href="admin_cadastrar_produto.html">Cadastrar Produtos</a> 
+                <a href="{{ route('admin_produtos') }}">Em estoque</a> 
+                <a href="{{ route('admin_usuarios') }}" class="active">Usuários</a> 
+                <a href="{{ route('admin_cadastrar_produto') }}">Cadastrar Produtos</a> 
             </nav>
 
             <div class="admin-action-bar">
@@ -103,6 +103,6 @@
             </div>
     </main>
 
-    <script src="js/script.js"></script> 
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
