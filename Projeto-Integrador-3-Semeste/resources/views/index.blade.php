@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joalheria - Página Inicial</title>
-    <link rel="stylesheet" href="{{ ('css/style.css') }}">
-    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 </head>
 <body>
 
     <div class="top-bar">
-        <span>Faça login e ganhe 20% em sua primeira compra. <a href="cadastro.html">Registre-se</a></span>
+        <span>Faça login e ganhe 20% em sua primeira compra. <a href="cadastro">Registre-se</a></span>
         <button class="close-btn" title="Fechar">✕</button>
     </div>
     <header class="container main-header">
-        <a href="index.html" class="logo">Elegance Joias</a> 
+        <a href="index" class="logo">Elegance Joias</a> 
         <nav>
-            <a href="index.html">Página Inicial</a>
-            <a href="feminino.html">Feminino</a>
-            <a href="#">Masculino</a>
+            <a href="{{route('index')}}">Página Inicial</a>
+            <a href="{{route('feminino')}}">Feminino</a>
+            <a href="{{route('masculino')}}">Masculino</a>
         </nav>
         <div class="header-icons">
             <div class="search-container">

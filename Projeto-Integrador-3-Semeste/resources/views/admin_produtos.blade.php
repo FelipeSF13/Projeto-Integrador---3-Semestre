@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel ADM - Produtos em Estoque</title> 
-    <link rel="stylesheet" href="{{ ('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     
 </head>
 <body class="admin-body-bg"> 

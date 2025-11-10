@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento - Joalheria</title>
-    <link rel="stylesheet" href="{{ ('css/style.css') }}">
-    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 </head>
 <body>
 
-    <div class="top-bar"><span>Faça login e ganhe 20% em sua primeira compra. <a href="cadastro.html">Registre-se</a></span><button class="close-btn" title="Fechar">✕</button></div>
+    <div class="top-bar"><span>Faça login e ganhe 20% em sua primeira compra. <a href="cadastro">Registre-se</a></span><button class="close-btn" title="Fechar">✕</button></div>
     <header class="container main-header">
-        <a href="index.html" class="logo">Elegance Joias</a> <nav>
-            <a href="index.html">Página Inicial</a>
-            <a href="feminino.html">Feminino</a>
-            <a href="masculino.html">Masculino</a>
+        <a href="index" class="logo">Elegance Joias</a> <nav>
+            <a href="index">Página Inicial</a>
+            <a href="feminino.">Feminino</a>
+            <a href="masculino">Masculino</a>
         </nav>
 
         <div class="header-icons">
@@ -22,11 +22,11 @@
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 <input type="text" placeholder="Pesquisar produtos" class="search-input">
             </div>
-            <a href="carrinho.html" class="icon-link cart-icon-link" title="Carrinho">
+            <a href="carrinho" class="icon-link cart-icon-link" title="Carrinho">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 <span class="cart-item-count">0</span>
             </a>
-            <a href="login.html" class="icon-link" title="Login">
+            <a href="login" class="icon-link" title="Login">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </a>
         </div>
@@ -34,12 +34,12 @@
 
     <main class="container">
         <nav class="breadcrumb">
-            <a href="index.html">Página Inicial</a>
+            <a href="index">Página Inicial</a>
             <span>&gt;</span>
             <a href="#">Anel de...</a>
-             <span>&gt;</span>
-            <a href="carrinho.html">Carrinho</a>
-             <span>&gt;</span>
+            <span>&gt;</span>
+            <a href="carrinho">Carrinho</a>
+            <span>&gt;</span>
             <span class="current">Pagamento</span>
         </nav>
 
