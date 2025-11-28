@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joalheria - Página Inicial</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/atomic/molecules/_brands-scroll.css') }}">
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 </head>
 <body>
@@ -46,11 +47,11 @@
 
         <section class="container">
             <h2 class="section-title">Novidades</h2>
-            <div class="product-grid" id="product-grid-container"> 
-                
+            <div class="product-grid" id="product-grid-container">
+
                 </div>
             <div class="view-more-container">
-                <button class="btn-outline" id="load-more-btn">Ver mais</button> 
+                <button class="btn-outline" id="load-more-btn">Ver mais</button>
             </div>
         </section>
 
@@ -68,7 +69,7 @@
             <form action="#" method="POST"><div class="input-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
             <input type="email" placeholder="Digite seu email" class="input-field">
         </div>
-    
+
         <div class="input-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
             <input type="text" placeholder="Conte para gente sua questão!" class="input-field">
@@ -119,11 +120,12 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
-    
+
+
+    <script src="{{ asset('js/brands-scroll.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

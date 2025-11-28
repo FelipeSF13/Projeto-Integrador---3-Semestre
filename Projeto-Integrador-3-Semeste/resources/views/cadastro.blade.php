@@ -48,8 +48,8 @@
                 <input type="email" placeholder="Email" class="input-field" required>
                 <input type="password" placeholder="Senha" class="input-field" required>
                 <input type="password" placeholder="Confirmar Senha" class="input-field" required>
-                
-                <p class="auth-link">Já tem conta? <a href="login.html">Faça login!</a></p>
+
+                <p class="auth-link">Já tem conta? <a href="{{ route('login') }}">Faça login!</a></p>
                 <button type="submit" class="btn btn-dark">Cadastrar</button>
             </form>
         </div>
@@ -69,7 +69,7 @@
     </form>
 </div>
 </section>
-    
+
     <footer class="container main-footer">
         <div class="footer-grid">
             <div class="footer-about">
@@ -109,10 +109,10 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
+
 
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

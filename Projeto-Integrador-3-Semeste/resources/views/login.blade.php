@@ -51,9 +51,9 @@
                     <label for="login-pass">Senha</label>
                     <input type="password" id="login-pass" class="input-field" required>
                 </div>
-                
+
                 <a href="#" class="auth-link forgot-password">Esqueci senha</a>
-                <p class="auth-link"> É administrador? <a href="{{route('adm-dashboard')}}."> Entre no portal!</a></p>
+                <p class="auth-link"> É administrador? <a href="{{route('adm-dashboard')}}"> Entre no portal!</a></p>
                 <p class="auth-link">Não tem conta? <a href="{{route('adm-usuarios')}}">Cadastre-se!</a></p>
                 <button type="submit" class="btn btn-dark">Entrar</button>
             </form>
@@ -74,7 +74,7 @@
     </form>
 </div>
 </section>
-    
+
     <footer class="container main-footer">
         <div class="footer-grid">
             <div class="footer-about">
@@ -114,10 +114,10 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
+
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

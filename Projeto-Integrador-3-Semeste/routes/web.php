@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('nome do index.blade.php SEM o .blade.php');
 // })->name('nome-da-rota');
 
-Route::get('/index', function () {
+Route::get('/', function () {
     return view('index');
 })->name('index');
 

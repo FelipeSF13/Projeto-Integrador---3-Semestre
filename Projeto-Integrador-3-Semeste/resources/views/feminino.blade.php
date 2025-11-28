@@ -14,7 +14,7 @@
         <button class="close-btn" title="Fechar">✕</button>
     </div>
     <header class="container main-header">
-        <a href="{{ route('index') }}" class="logo">Elegance Joias</a> 
+        <a href="{{ route('index') }}" class="logo">Elegance Joias</a>
         <nav>
             <a href="{{ route('index') }}">Página Inicial</a>
             <a href="{{ route('feminino') }}">Feminino</a>
@@ -57,13 +57,13 @@
 
                <div class="filter-group">
                     <h3 class="filter-title">Preço</h3>
-                    <input type="range" class="price-slider" id="price-slider-input" min="0" max="10000" value="10000" step="100"> 
+                    <input type="range" class="price-slider" id="price-slider-input" min="0" max="10000" value="10000" step="100">
                     <div class="price-range">
-                        <span>R$0</span> 
-                        <span id="price-slider-value">R$10000</span> 
+                        <span>R$0</span>
+                        <span id="price-slider-value">R$10000</span>
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
                     <h3 class="filter-title">Cor</h3>
                     <div class="color-filter-list">
@@ -86,15 +86,19 @@
 
                 <div class="product-grid listing">
                     <script>
+                        // Base URL para detalhes de produto; concatenamos o id no cliente.
+                        const detalheBase = "{{ url('detalhe-produto') }}"; // ex: /detalhe-produto
                         const listingProducts = [
-                            { name: 'Brinco de Ouro 10k', price: '2.125,50', original: '2.632,50', rating: '5.0/5', img: 'img/anel1.png' },
-                            { name: 'Anel de Ouro 20k', price: '1.545,55', rating: '4.0/5', img: 'img/colar1.png' },
-                            { name: 'Colar de Ouro 85k', price: '8.000,50', rating: '3.8/5', img: 'img/anel2.png' },
+                            { name: 'Brinco de Ouro 10k', price: '2.125,50', original: '2.632,50', rating: '5.0/5', img: 'img/anel1.png', id: 1 },
+                            { name: 'Anel de Ouro 20k', price: '1.545,55', rating: '4.0/5', img: 'img/colar1.png', id: 2 },
+                            { name: 'Colar de Ouro 85k', price: '8.000,50', rating: '3.8/5', img: 'img/anel2.png', id: 3 },
                         ];
+
                         for (let i = 0; i < 3; i++) {
                             listingProducts.forEach(p => {
+                                const href = `${detalheBase}/${p.id}`;
                                 document.write(`
-                                    <a href="{{ route('detalhe-produto', ['id' => p.id]) }}" class="product-card">
+                                    <a href="${href}" class="product-card">
                                         <img src="${p.img}" alt="${p.name}">
                                         <h3>${p.name}</h3>
                                         <p class="price">
@@ -135,7 +139,7 @@
     </form>
 </div>
 </section>
-    
+
     <footer class="container main-footer">
         <div class="footer-grid">
             <div class="footer-about">
@@ -175,10 +179,10 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
+
 
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

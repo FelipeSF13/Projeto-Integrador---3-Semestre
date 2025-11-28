@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel ADM - Produtos em Estoque</title> 
+    <title>Painel ADM - Produtos em Estoque</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    
+
 </head>
-<body class="admin-body-bg"> 
+<body class="admin-body-bg">
 
     <header class="admin-header">
          <div class="admin-header-content container">
             <nav aria-label="breadcrumb" class="admin-breadcrumbs">
                 <ol>
-                    <li><a href="admin_dashboard.html">Painel</a></li> 
+                    <li><a href="{{ route('adm-dashboard') }}">Painel</a></li>
                     <li><span>&gt;</span></li>
-                    <li aria-current="page">Usuários Cadastrados</li> 
+                    <li aria-current="page">Usuários Cadastrados</li>
                 </ol>
             </nav>
             <div class="admin-header-right">
@@ -25,7 +25,7 @@
                 </div>
                 <button class="icon-button notifications" aria-label="Notificações">
                     <i class="fas fa-bell"></i>
-                    <span class="badge notification-badge">3</span> 
+                    <span class="badge notification-badge">3</span>
                 </button>
                 <div class="user-profile">
                     <span class="user-initial">J</span>
@@ -36,19 +36,24 @@
     </header>
 
     <main class="admin-main container">
-        <div class="admin-card"> 
+        <div class="admin-card">
             <h2>Em estoque</h2>
             <p class="subtitle">Produtos em Estoque</p>
 
             <nav class="admin-tabs">
-                <a href="{{ route('admin_produtos') }}" class="active">Em estoque</a> 
-                <a href="{{ route('admin_usuarios') }}">Usuários</a> 
-                <a href="{{ route('admin_cadastrar_produto') }}">Cadastrar Produtos</a> 
+                <a href="{{ route('adm-produto') }}" class="active">Em estoque</a>
+                <a href="{{ route('adm-usuarios') }}">Usuários</a>
+                <a href="{{ route('adm-cadastro') }}">Cadastrar Produtos</a>
             </nav>
 
             <div class="admin-action-bar">
-                <button class="icon-button"><i class="far fa-calendar-alt"></i></button>
-                <button class="btn btn-secondary dropdown-toggle">Filtros <i class="fas fa-chevron-down"></i></button>
+                <div class="left-actions">
+                    <a href="javascript:history.back()" class="back-btn">&larr; Voltar</a>
+                </div>
+                <div class="right-actions">
+                    <button class="icon-button"><i class="far fa-calendar-alt"></i></button>
+                    <button class="btn btn-secondary dropdown-toggle">Filtros <i class="fas fa-chevron-down"></i></button>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -134,6 +139,6 @@
              </div>
     </main>
 
-    <script src="{{ asset('js/script.js') }}"></script> 
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

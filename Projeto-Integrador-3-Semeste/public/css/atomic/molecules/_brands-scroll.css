@@ -1,0 +1,5 @@
+/* Styles for brands scroll (marquee-like) */
+.brands-bar{overflow:hidden}
+.brands-scroll-content{display:flex;gap:3rem;align-items:center;white-space:nowrap}
+.brands-scroll-content.animate{animation:brands-scroll linear infinite}
+@keyframes brands-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
