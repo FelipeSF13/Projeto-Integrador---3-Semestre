@@ -55,3 +55,4 @@ Route::get('/adm-dashboard', function () {
 Route::get('/adm-cadastro', function () {
     return view('admin_cadastrar_produto');
 })->name('adm-cadastro');
+
