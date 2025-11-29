@@ -23,6 +23,12 @@
   --admin-text-color: #212529; /* Cor principal do texto */
   --admin-secondary-text: #6c757d; /* Cor de texto secundário (subtítulos, tempo) */
   --admin-primary-color: #0d6efd; /* Azul primário (para botões, links ativos) */
+  /* Paleta Vivara-like */
+  --vivara-gold: #b88b3b;
+  --vivara-gold-weak: rgba(184,139,59,0.08);
+  --vivara-gold-dark: #8f6b2d;
+  /* Redefine admin primary para dourado refinado */
+  --admin-primary-color: var(--vivara-gold);
   --admin-badge-adm-bg: #ffc107; /* Cor badge ADM (Amarelo) */
   --admin-badge-adm-text: #000;
   --admin-badge-relogio-bg: #0dcaf0; /* Ciano */
@@ -38,7 +44,7 @@
   --admin-badge-anel-text: #fff;
   --admin-badge-colar-bg: #d63384; /* Rosa */
   --admin-badge-colar-text: #fff;
-  
+
   /* Fontes */
   --font-body: 'Poppins', sans-serif;
   --font-logo: 'Cormorant Garamond', serif;

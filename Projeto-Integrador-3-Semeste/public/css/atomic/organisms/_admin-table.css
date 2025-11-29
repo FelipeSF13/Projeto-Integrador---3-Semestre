@@ -1,33 +1,8 @@
 .admin-action-bar {
   display: flex;
-  justify-content: space-between; /* Espaça ações: esquerda / direita */
-  align-items: center;
+  justify-content: flex-end; /* Alinha botões à direita por padrão */
   gap: 0.5rem;
   margin-bottom: 1rem;
-}
-
-/* Containers para facilitar posicionamento de ações à esquerda e direita */
-.admin-action-bar .left-actions,
-.admin-action-bar .right-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-/* Botão de voltar padrão para páginas admin */
-.back-btn {
-  display: inline-block;
-  padding: 0.45rem 0.75rem;
-  border-radius: 0.35rem;
-  border: 1px solid var(--admin-border-color);
-  background: transparent;
-  color: var(--admin-secondary-text);
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-.back-btn:hover {
-  background: var(--admin-bg-color);
-  color: var(--admin-text-color);
 }
 
 /* Estilo para parecer dropdown */

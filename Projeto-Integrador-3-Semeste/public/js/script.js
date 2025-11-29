@@ -1090,7 +1090,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = contactForm.querySelector('#contact-message').value;
 
             if (email && message) {
-                alert('Mensagem enviada com sucesso! (Simulação)');
+                // Mostrar modal de agradecimento em vez de alert
+                showContactThanksModal();
                 contactForm.reset();
             } else {
                 alert('Por favor, preencha todos os campos.');
@@ -1098,6 +1099,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Função para criar/mostrar modal de agradecimento
+    function showContactThanksModal() {
+        let existing = document.getElementById('contact-thanks-modal');
+        if (!existing) {
+            const modal = document.createElement('div');
+            modal.id = 'contact-thanks-modal';
+            modal.className = 'contact-thanks-modal';
+            modal.innerHTML = `
+                <div class="ctm-overlay"></div>
+                <div class="ctm-card">
+                    <button class="ctm-close" aria-label="Fechar">×</button>
+                    <div class="ctm-content">
+                        <h3>Obrigado!</h3>
+                        <p>Sua mensagem foi recebida. Retornaremos em breve.</p>
+                        <button class="btn btn-dark ctm-ok">Fechar</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Eventos
+            modal.querySelector('.ctm-close').addEventListener('click', () => { modal.remove(); });
+            modal.querySelector('.ctm-ok').addEventListener('click', () => { modal.remove(); });
+            modal.querySelector('.ctm-overlay').addEventListener('click', () => { modal.remove(); });
+        } else {
+            existing.style.display = 'block';
+        }
+    }
     // ===========================================
     //         LÓGICA DO PAINEL ADMIN
     // ===========================================

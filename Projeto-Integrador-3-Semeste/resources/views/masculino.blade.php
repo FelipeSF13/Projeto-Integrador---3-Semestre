@@ -10,7 +10,7 @@
 <body>
 
     <div class="top-bar">
-        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ route('cadastro') }}">Registre-se</a></span>
+        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ url('/cadastro') }}">Registre-se</a></span>
         <button class="close-btn" title="Fechar">✕</button>
     </div>
     <header class="container main-header">
@@ -48,10 +48,10 @@
                 <div class="filter-group">
                     <h3 class="filter-title">Filtros</h3>
                     <div class="filter-options">
-                        <a href="#" class="filter-item"><span>Relógios</span> <span>&gt;</span></a>
-                        <a href="#" class="filter-item"><span>Pulseira</span> <span>&gt;</span></a>
-                        <a href="#" class="filter-item"><span>Corrente</span> <span>&gt;</span></a>
-                        <a href="#" class="filter-item"><span>Anel</span> <span>&gt;</span></a>
+                        <a href="#" class="filter-item" data-cat="relogios"><span>Relógios</span> <span>&gt;</span></a>
+                        <a href="#" class="filter-item" data-cat="pulseira"><span>Pulseira</span> <span>&gt;</span></a>
+                        <a href="#" class="filter-item" data-cat="corrente"><span>Corrente</span> <span>&gt;</span></a>
+                        <a href="#" class="filter-item" data-cat="anel"><span>Anel</span> <span>&gt;</span></a>
                     </div>
                 </div>
 
@@ -67,48 +67,158 @@
                 <div class="filter-group">
                     <h3 class="filter-title">Cor</h3>
                     <div class="color-filter-list">
-                        <span class="color-swatch" style="background-color: #fde047;" title="Ouro"></span>
-                        <span class="color-swatch" style="background-color: #d1d5db;" title="Prata"></span>
+                        <span class="color-swatch" data-color="ouro" style="background-color: #fde047;" title="Ouro"></span>
+                        <span class="color-swatch" data-color="prata" style="background-color: #d1d5db;" title="Prata"></span>
                     </div>
                 </div>
 
-                <button class="btn btn-dark" style="width: 100%;">Aplicar Filtros</button>
+                <button id="apply-filters-btn" class="btn btn-dark" style="width: 100%;">Aplicar Filtros</button>
             </aside>
 
             <section class="listing-products">
-                <div class="listing-header">
+                    <div class="listing-header">
                     <h1>Masculino</h1>
                     <div class="sort-by">
-                        <span>Filtrado 1-10 a 100 Produtos</span>
-                        <span>Por: <strong>Mais popular &vee;</strong></span>
+                        <span id="listing-count">Filtrado 1-10 a 100 Produtos</span>
+                        <label for="sort-select" style="margin-left:12px">Por:</label>
+                        <select id="sort-select" aria-label="Ordenar produtos">
+                            <option value="popular">Mais popular</option>
+                            <option value="price-asc">Menor preço</option>
+                            <option value="price-desc">Maior preço</option>
+                            <option value="name-asc">A - Z</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="product-grid listing">
-                    <script>
+                <div class="product-grid listing" id="product-grid">
+                    <!-- Products rendered by JS -->
+                </div>
+
+                <script>
+                    (function(){
                         const detalheBase = "{{ url('detalhe-produto') }}";
-                        const listingProducts = [
-                            { name: 'Brinco de Ouro 10k', price: '2.125,50', original: '2.632,50', rating: '5.0/5', img: 'img/relogio1.png', id: 1 },
-                            { name: 'Anel de Ouro 20k', price: '1.545,55', rating: '4.0/5', img: 'img/relogio1.png', id: 2 },
-                            { name: 'Colar de Ouro 85k', price: '8.000,50', rating: '3.8/5', img: 'img/relogio1.png', id: 3 },
-                        ];
-                        for (let i = 0; i < 3; i++) {
-                            listingProducts.forEach(p => {
+                        const assetBase = "{{ asset('') }}";
+                        const listingProducts = @json($products ?? []);
+
+                        const grid = document.getElementById('product-grid');
+                        const priceSlider = document.getElementById('price-slider-input');
+                        const priceValue = document.getElementById('price-slider-value');
+                        const filterItems = Array.from(document.querySelectorAll('.filter-item'));
+                        const colorSwatches = Array.from(document.querySelectorAll('.color-swatch'));
+                        const applyBtn = document.getElementById('apply-filters-btn');
+                        const sortSelect = document.getElementById('sort-select');
+                        const listingCount = document.getElementById('listing-count');
+                        let currentSort = sortSelect ? sortSelect.value : 'popular';
+
+                        function sortProducts(products, sort){
+                            const arr = products.slice();
+                            switch(sort){
+                                case 'price-asc': arr.sort((a,b)=> a.price - b.price); break;
+                                case 'price-desc': arr.sort((a,b)=> b.price - a.price); break;
+                                case 'name-asc': arr.sort((a,b)=> a.name.localeCompare(b.name, 'pt-BR')); break;
+                                case 'popular':
+                                default:
+                                    arr.sort((a,b)=> (b.rating||0) - (a.rating||0));
+                            }
+                            return arr;
+                        }
+
+                        function renderProducts(products){
+                            grid.innerHTML = '';
+                            if(!products.length){
+                                grid.innerHTML = '<p>Nenhum produto encontrado com os filtros aplicados.</p>';
+                                return;
+                            }
+
+                            if(listingCount) listingCount.textContent = `Mostrando ${products.length} produto(s)`;
+                            products.forEach(p => {
                                 const href = `${detalheBase}/${p.id}`;
-                                document.write(`
-                                    <a href="${href}" class="product-card">
-                                        <img src="${p.img}" alt="${p.name}">
-                                        <h3>${p.name}</h3>
-                                        <p class="price">
-                                            <span class="sale">R$${p.price}</span>
-                                            ${p.original ? `<span class="original">R$${p.original}</span>` : ''}
-                                        </p>
-                                    </a>
-                                `);
+                                const card = document.createElement('a');
+                                card.className = 'product-card';
+                                card.href = href;
+                                card.innerHTML = `
+                                    <img src="${assetBase}${p.img}" alt="${p.name}">
+                                    <h3>${p.name}</h3>
+                                    <p class="price">
+                                        <span class="sale">R$${p.priceText ?? p.price}</span>
+                                        ${p.original ? `<span class="original">R$${(p.original).toFixed(2).replace('.',',')}</span>` : ''}
+                                    </p>
+                                `;
+                                grid.appendChild(card);
                             });
                         }
-                    </script>
-                </div>
+
+                        function getSelectedCategories(){
+                            return filterItems.filter(i => i.classList.contains('active')).map(i => i.getAttribute('data-cat'));
+                        }
+
+                        function getSelectedColors(){
+                            return colorSwatches.filter(s => s.classList.contains('active')).map(s => s.getAttribute('data-color'));
+                        }
+
+                        function applyFilters(){
+                            const maxPrice = parseFloat(priceSlider.value);
+                            const cats = getSelectedCategories();
+                            const cols = getSelectedColors();
+
+                            let filtered = listingProducts.filter(p => {
+                                if(p.price > maxPrice) return false;
+                                if(cats.length && !cats.includes(p.category)) return false;
+                                if(cols.length && !cols.includes(p.color)) return false;
+                                return true;
+                            });
+
+                            filtered = sortProducts(filtered, currentSort);
+
+                            renderProducts(filtered);
+                        }
+
+                        priceValue.textContent = 'R$' + Number(priceSlider.value).toLocaleString('pt-BR');
+
+                        // make filter groups collapsible
+                        document.querySelectorAll('.filter-group .filter-title').forEach(title => {
+                            title.style.cursor = 'pointer';
+                            title.addEventListener('click', () => {
+                                const group = title.parentElement;
+                                group.classList.toggle('collapsed');
+                                const opts = group.querySelector('.filter-options');
+                                if(opts) opts.style.display = group.classList.contains('collapsed') ? 'none' : '';
+                            });
+                        });
+
+                        // initial render with sorting
+                        renderProducts(sortProducts(listingProducts, currentSort));
+
+                        priceSlider.addEventListener('input', () => {
+                            priceValue.textContent = 'R$' + Number(priceSlider.value).toLocaleString('pt-BR');
+                        });
+
+                        filterItems.forEach(item => {
+                            item.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                item.classList.toggle('active');
+                            });
+                        });
+
+                        colorSwatches.forEach(s => {
+                            s.addEventListener('click', () => {
+                                s.classList.toggle('active');
+                            });
+                        });
+
+                        applyBtn.addEventListener('click', () => {
+                            applyFilters();
+                        });
+
+                        if(sortSelect){
+                            sortSelect.addEventListener('change', () => {
+                                currentSort = sortSelect.value;
+                                applyFilters();
+                            });
+                        }
+
+                    })();
+                </script>
 
                 <nav class="pagination">
                     <a href="#" class="page-link">&larr; Voltar</a>

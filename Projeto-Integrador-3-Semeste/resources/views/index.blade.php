@@ -10,8 +10,8 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{route('cadastro')}}">Registre-se</a></span>
+            <div class="top-bar">
+        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ url('/cadastro') }}">Registre-se</a></span>
         <button class="close-btn" title="Fechar">✕</button>
     </div>
     <header class="container main-header">
@@ -50,6 +50,32 @@
             <div class="product-grid" id="product-grid-container">
 
                 </div>
+            <script>
+                (function(){
+                    const detalheBase = "{{ url('detalhe-produto') }}";
+                    const assetBase = "{{ asset('') }}";
+                    const listingProducts = @json($products ?? []);
+                    const container = document.getElementById('product-grid-container');
+
+                    function render(products){
+                        container.innerHTML = '';
+                        if(!products.length){ container.innerHTML = '<p>Nenhum produto disponível.</p>'; return; }
+                        products.forEach(p => {
+                            const a = document.createElement('a');
+                            a.className = 'product-card';
+                            a.href = `${detalheBase}/${p.id}`;
+                            a.innerHTML = `
+                                <img src="${assetBase}${p.img}" alt="${p.name}">
+                                <h3>${p.name}</h3>
+                                <p class="price"><span class="sale">R$${p.priceText ?? p.price}</span></p>
+                            `;
+                            container.appendChild(a);
+                        });
+                    }
+
+                    render(listingProducts);
+                })();
+            </script>
             <div class="view-more-container">
                 <button class="btn-outline" id="load-more-btn">Ver mais</button>
             </div>
@@ -111,7 +137,7 @@
             <div class="footer-links">
                 <h3>FAQ</h3>
                 <ul>
-                    <li><a href="#">Conta</a></li>
+                    <li><a href="{{ route('login') }}">Conta</a></li>
                     <li><a href="#">Reclamações</a></li>
                     <li><a href="#">Pagamento</a></li>
                 </ul>

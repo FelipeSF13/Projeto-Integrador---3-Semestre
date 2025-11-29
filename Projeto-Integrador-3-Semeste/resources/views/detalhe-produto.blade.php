@@ -8,18 +8,18 @@
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 </head>
 <body>
-    
+
     <div class="top-bar">
-        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ route('cadastro') }}">Registre-se</a></span>
+        <span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ url('/cadastro') }}">Registre-se</a></span>
         <button class="close-btn" title="Fechar">✕</button></div>
-        
+
         <header class="container main-header">
             <a href="{{ route('index') }}" class="logo">Elegance Joias</a> <nav>
                 <a href="{{ route('index') }}">Página Inicial</a>
                 <a href="{{ route('feminino') }}">Feminino</a>
                 <a href="{{ route('masculino') }}">Masculino</a>
             </nav>
-    
+
             <div class="header-icons">
                 <div class="search-container">
                     <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -45,30 +45,30 @@
         </nav>
 
         <section class="product-details-layout">
-            <div class="product-gallery">
+                <div class="product-gallery">
                 <div class="main-image">
-                    <img src="{{ asset('img/anelverde.webp') }}" alt="Produto Principal">
+                    <img src="{{ isset($product) ? asset($product['img']) : asset('img/anelverde.webp') }}" alt="Produto Principal">
                 </div>
                 <div class="thumbnail-images">
-                    <img src='{{ asset('img/anelverde.webp') }}' alt="Thumbnail 1">
+                    <img src='{{ isset($product) ? asset($product['img']) : asset('img/anelverde.webp') }}' alt="Thumbnail 1">
                     <img src='{{ asset('img/anel1.png') }}' alt="Thumbnail 2">
-                    <img src='{{ asset('img/anelverde.webp') }}' alt="Thumbnail 3">
+                    <img src='{{ isset($product) ? asset($product['img']) : asset('img/anelverde.webp') }}' alt="Thumbnail 3">
                 </div>
             </div>
             <div class="product-info">
-                <h1>Colar Preta - Pingentes Vermelhos</h1>
+                <h1>{{ $product['name'] ?? 'Produto' }}</h1>
                 <div class="rating-price">
                     <div class="rating">
-                        <span>4.5/5</span>
+                        <span>{{ $product['rating'] ?? '0.0' }}/5</span>
                     </div>
-                    <p class="info-price">R$5.350,55 <span class="original">R$8.500,52</span></p>
+                    <p class="info-price">R${{ $product['priceText'] ?? '0,00' }} @if(!empty($product['original'])) <span class="original">R${{ number_format($product['original'],2,',','.') }}</span> @endif</p>
                 </div>
                 <p class="description">
-                    Is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    {{ $product['description'] ?? "Descrição do produto não disponível." }}
                 </p>
                 <div class="color-selector">
-                    <span class="color-swatch active" style="background-color: #d1d5db;" title="Prata"></span>
-                    <span class="color-swatch" style="background-color: #fde047;" title="Ouro"></span>
+                    <span class="color-swatch {{ isset($product) && ($product['color'] ?? '') == 'prata' ? 'active' : '' }}" style="background-color: #d1d5db;" title="Prata"></span>
+                    <span class="color-swatch {{ isset($product) && ($product['color'] ?? '') == 'ouro' ? 'active' : '' }}" style="background-color: #fde047;" title="Ouro"></span>
                 </div>
                 <div class="controls">
                     <div class="quantity-selector">
@@ -121,12 +121,33 @@
         </section>
 
         <section class="container related-products-section"> <h2 class="section-title">Destaques para você</h2>
-            <div class="product-grid" id="related-products-grid"> 
+            <div class="product-grid" id="related-products-grid">
                 </div>
+            <script>
+                (function(){
+                    const detalheBase = "{{ url('detalhe-produto') }}";
+                    const assetBase = "{{ asset('') }}";
+                    const related = @json($related ?? []);
+                    const container = document.getElementById('related-products-grid');
+                    container.innerHTML = '';
+                    if(!related.length){ container.innerHTML = '<p>Sem recomendações no momento.</p>'; }
+                    related.forEach(p => {
+                        const a = document.createElement('a');
+                        a.className = 'product-card';
+                        a.href = `${detalheBase}/${p.id}`;
+                        a.innerHTML = `
+                            <img src="${assetBase}${p.img}" alt="${p.name}">
+                            <h3>${p.name}</h3>
+                            <p class="price"><span class="sale">R$${p.priceText ?? p.price}</span></p>
+                        `;
+                        container.appendChild(a);
+                    });
+                })();
+            </script>
         </section>
 
     </main>
-    
+
     <section class="contact-section"><div class="content"><h2>Entre em contato com a gente caso tenha alguma dúvida ou sugestão! :) <h2>
 
         <form action="#" method="POST"><div class="input-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -141,7 +162,7 @@
     </form>
 </div>
 </section>
-    
+
     <footer class="container main-footer">
         <div class="footer-grid">
             <div class="footer-about">
@@ -181,10 +202,10 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
+
 
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

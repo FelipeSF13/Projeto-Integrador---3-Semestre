@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <div class="top-bar"><span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ route('cadastro') }}">Registre-se</a></span><button class="close-btn" title="Fechar">✕</button></div>
+    <div class="top-bar"><span>Faça login e ganhe 20% em sua primeira compra. <a href="{{ url('/cadastro') }}">Registre-se</a></span><button class="close-btn" title="Fechar">✕</button></div>
     <header class="container main-header">
         <a href="{{ route('index') }}" class="logo">Elegance Joias</a> <nav>
             <a href="{{ route('index') }}">Página Inicial</a>
@@ -44,7 +44,7 @@
         </nav>
 
         <div class="checkout-layout">
-            
+
             <section class="checkout-summary">
                 <h1 class="checkout-title">Resumo</h1>
 
@@ -56,17 +56,17 @@
                     <h3>Pagamento confirmado!</h3>
                 </div>
                 <div class="cart-items">
-                     <article class="cart-item" data-price="145.50"><div class="item-details"><img src="img/anel1.png" 
+                     <article class="cart-item" data-price="145.50"><div class="item-details"><img src="img/anel1.png"
                        alt="Colar de Ouro"><div><h2>Colar de Ouro</h2><p>Tamanho: 45 cm</p><p>Cor: Ouro</p><p class="price">R$145,50</p></div></div><div class="item-controls"><div class="quantity-selector"><button class="decrease-qty">-</button><span class="quantity-value">1</span><button class="increase-qty">+</button></div><button class="delete-item-btn" title="Remover"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></div></article>
 
-                     <article class="cart-item" data-price="180.45"><div class="item-details"><img src="img/anel2.png" 
+                     <article class="cart-item" data-price="180.45"><div class="item-details"><img src="img/anel2.png"
                         alt="Colar de Ouro"><div><h2>Colar de Ouro</h2><p>Tamanho: 45 cm</p><p>Cor: Ouro</p><p class="price">R$180,45</p></div></div><div class="item-controls"><div class="quantity-selector"><button class="decrease-qty">-</button><span class="quantity-value">1</span><button class="increase-qty">+</button></div><button class="delete-item-btn" title="Remover"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></div></article>
 
-                     <article class="cart-item" data-price="240.25"><div class="item-details"><img src="img/colar2.png" 
+                     <article class="cart-item" data-price="240.25"><div class="item-details"><img src="img/colar2.png"
                         alt="Colar de Ouro"><div><h2>Colar de Ouro</h2><p>Tamanho: 40 cm</p><p>Cor: Ouro</p><p class="price">R$240,25</p></div></div><div class="item-controls"><div class="quantity-selector"><button class="decrease-qty">-</button><span class="quantity-value">1</span><button class="increase-qty">+</button></div><button class="delete-item-btn" title="Remover"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg></button></div></article>
                 </div>
             </section>
-            
+
             <aside class="checkout-payment">
                 <a href="{{ route('carrinho') }}" class="back-link">&larr; Voltar </a>
                 <h1 class="checkout-title payment">Pagamento</h1>
@@ -82,7 +82,7 @@
                         <span id="subtotal" class="value">R$565,89</span>
                     </div>
                     <div class="summary-row">
-                        <span id="discount-label">Desconto (-20%)</span> 
+                        <span id="discount-label">Desconto (-20%)</span>
                         <span id="discount" class="discount">-R$113,55</span>
                     </div>
                     <div class="summary-row">
@@ -136,12 +136,12 @@
                     <button type="submit" class="btn btn-dark" id="continue-btn" style="width: 100%; background-color: var(--color-primary); color: var(--color-dark);">Continue</button>
                 </form>
 
-                
+
 
             </aside>
         </div>
     </main>
-    
+
     <section class="contact-section"><div class="content"><h2>Entre em contato com a gente caso tenha alguma dúvida ou sugestão! :) <h2>
 
         <form action="#" method="POST"><div class="input-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -156,7 +156,7 @@
     </form>
 </div>
 </section>
-    
+
     <footer class="container main-footer">
         <div class="footer-grid">
             <div class="footer-about">
@@ -196,10 +196,10 @@
         <div class="footer-bottom">
             <p>Elegance Joias © 2000-2025 - Todos direitos reservados</p> <div class="footer-payment-icons">
                 <img src="{{ asset('img/bandeiras.jpg') }}" height="35" width="300" alt="Visa Electron" title="Visa Electron">
-                
+
         </div>
     </footer>
-    
+
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
