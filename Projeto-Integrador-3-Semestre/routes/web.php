@@ -87,6 +87,23 @@ Route::get('/adm-cadastro', function () {
     return view('admin_cadastrar_produto');
 })->name('adm-cadastro');
 
+// Handle product creation from admin panel (simple placeholder handler)
+Route::post('/adm-cadastro', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'price' => 'required|string',
+        'stock' => 'nullable|integer',
+        'category' => 'nullable|string',
+        'image' => 'nullable|file|image|max:5120',
+    ]);
+
+    // NOTE: This project currently doesn't persist products.
+    // In a real app, you would save to the database here.
+
+    return back()->with('success', 'Produto cadastrado com sucesso (simulado).');
+})->name('adm-cadastro.save');
+
 // Contact form POST handler (fallback for non-JS users)
 Route::post('/contact', function (Request $request) {
     // You can validate and save the message here. For now, just flash a message and return back.
