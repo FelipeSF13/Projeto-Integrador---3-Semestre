@@ -9,7 +9,7 @@
 </head>
 <body>
     @include('partials.header')
-
+ s
     <main class="container">
         <section class="admin-section">
             <div class="admin-card">
