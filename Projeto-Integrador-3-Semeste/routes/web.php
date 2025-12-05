@@ -1,22 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
+Route::get('/', [ProductController::class, 'index'])->name('index');
 
-Route::get('/feminino', function () {
-    return view('feminino');
-})->name('feminino');
+Route::get('/feminino', [ProductController::class, 'feminino'])->name('feminino');
 
-Route::get('/masculino', function () {
-    return view('masculino');
-})->name('masculino');
+Route::get('/masculino', [ProductController::class, 'masculino'])->name('masculino');
 
-Route::get('/produto/{id?}', function () {
-    return view('detalhe-produto');
-})->name('produto');
+Route::get('/produto/{id?}', [ProductController::class, 'show'])->name('produto');
 
 Route::get('/pagamento', function () {
     return view('pagamento');
@@ -26,21 +19,21 @@ Route::get('/carrinho', function () {
     return view('carrinho');
 })->name('carrinho');
 
-Route::get('/admin/produtos', function () {
+Route::get('/adm-produto', function () {
     return view('admin_produtos');
-})->name('admin.produtos');
+})->name('adm-produto');
 
-Route::get('/admin/usuarios', function () {
+Route::get('/adm-usuarios', function () {
     return view('admin_usuarios');
-})->name('admin.usuarios');
+})->name('adm-usuarios');
 
-Route::get('/admin/dashboard', function () {
+Route::get('/adm-dashboard', function () {
     return view('admin_dashboard');
-})->name('admin.dashboard');
+})->name('adm-dashboard');
 
-Route::get('/admin/cadastrar-produto', function () {
+Route::get('/adm-cadastro', function () {
     return view('admin_cadastrar_produto');
-})->name('admin.cadastrar-produto');
+})->name('adm-cadastro');
 
 Route::get('/login', function () {
     return view('login');
