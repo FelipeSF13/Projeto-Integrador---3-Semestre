@@ -16,14 +16,14 @@
         <section class="product-details-layout">
             <div class="product-gallery">
                 <div class="main-image">
-                    <img src="{{ $product->image }}" 
+                    <img src="{{ asset('img/' . $product->image) }}" 
                          alt="{{ $product->name }}"
-                         onerror="this.src='https://via.placeholder.com/500x500?text=Joia'">
+                         onerror="this.src='{{ asset('img/placeholder.svg') }}'">
                 </div>
                 <div class="thumbnail-images">
-                    <img src="{{ $product->image }}" 
+                    <img src="{{ asset('img/' . $product->image) }}" 
                          alt="{{ $product->name }}"
-                         onerror="this.src='https://via.placeholder.com/500x500?text=Joia'">
+                         onerror="this.src='{{ asset('img/placeholder.svg') }}'">
                 </div>
             </div>
             <div class="product-info">
@@ -99,8 +99,4 @@
     </div>
 
 @include('partials.contact')
-@endsection
-
-@section('extra-scripts')
-<script src="{{ asset('js/product-images.js') }}"></script>
 @endsection

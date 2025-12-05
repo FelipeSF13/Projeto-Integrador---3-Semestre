@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let allProducts = [];
+    let originalHTML = productListing.innerHTML;
 
     // Capturar todos os produtos inicialmente
     function captureAllProducts() {
-        const products = document.querySelectorAll('.product-card:not([data-empty-message])');
+        const products = document.querySelectorAll('.product-card');
         allProducts = Array.from(products).map(el => ({
-            element: el.cloneNode(true),
-            originalElement: el,
-            price: parseFloat(el.getAttribute('data-price')),
+            element: el,
+            price: parseFloat(el.getAttribute('data-price') || 0),
             color: el.getAttribute('data-color') || 'neutro',
             type: el.getAttribute('data-type') || 'outros'
         }));
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         priceSlider.addEventListener('input', (e) => {
             filterState.maxPrice = parseInt(e.target.value);
             priceValue.textContent = `R$${filterState.maxPrice.toLocaleString('pt-BR')}`;
-            filterState.currentPage = 1; // Reset página ao filtrar
+            filterState.currentPage = 1;
         });
     }
 
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 categoryItems.forEach(i => i.style.opacity = '0.6');
                 item.style.opacity = '1';
                 filterState.category = item.getAttribute('data-category');
-                filterState.currentPage = 1; // Reset página ao filtrar
-                applyFilters(); // Aplicar filtros em tempo real
+                filterState.currentPage = 1;
+                applyFilters();
             });
         });
         categoryItems[0].style.opacity = '1';
@@ -77,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     swatch.classList.add('selected');
                     filterState.color = chosen;
                 }
-                filterState.currentPage = 1; // Reset página ao filtrar
-                applyFilters(); // Aplicar filtros em tempo real
+                filterState.currentPage = 1;
+                applyFilters();
             });
         });
     }
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderProducts(filtered) {
-        // Limpar todos os produtos e mensagens
+        // Limpar container
         productListing.innerHTML = '';
 
         if (filtered.length === 0) {

@@ -16,8 +16,7 @@
         @yield('content')
     </main>
 
-    <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ asset('js/contact-form.js') }}"></script>
+    <script type="module" src="{{ asset('js/app.js') }}"></script>
     @yield('extra-scripts')
 </body>
 </html>

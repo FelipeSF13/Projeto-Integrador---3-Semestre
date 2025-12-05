@@ -4,7 +4,7 @@
   color: var(--color-white);
   padding: var(--space-xxl) var(--space-lg);
   margin: var(--space-xxl) 0;
-  border-radius: 15px;
+  border-radius: 0px;
 }
 .contact-section .content {
   max-width: 800px;

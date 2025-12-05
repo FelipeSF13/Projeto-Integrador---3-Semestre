@@ -1,11 +1,17 @@
-/* Brands Bar - Rotação infinita */
+/* Brands Bar - Carousel component */
+
 .brands-bar {
-    background-color: #f9f9f9;
+    background-color: #111111;
     padding: 20px 0;
     overflow: hidden;
     border-top: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
-    width: 100%;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
 
 .brands-scroll-content {
@@ -14,7 +20,7 @@
     animation: scrollBrands 30s linear infinite;
     white-space: nowrap;
     font-weight: 600;
-    color: #666;
+    color: #ffffff;
     font-size: 13px;
     letter-spacing: 1px;
     width: fit-content;
@@ -36,23 +42,23 @@
 .brands-scroll-content span {
     cursor: pointer;
     transition: color 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
-    padding: 5px 15px;
+    padding: 10px 25px;
     border-radius: 4px;
     user-select: none;
-    flex: 1;
     text-align: center;
-    min-width: 0;
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 100px;
+    min-width: 150px;
+    font-size: 15px;
+    flex-shrink: 0;
 }
 
 .brands-scroll-content span:hover {
-    color: #111;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.05);
+    color: #f7b896;
+    text-shadow: 0 0 8px rgba(247, 184, 150, 0.3);
+    background-color: rgba(247, 184, 150, 0.1);
 }
 
 .brands-scroll-content span.active {

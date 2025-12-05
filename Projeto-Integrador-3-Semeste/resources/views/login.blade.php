@@ -31,7 +31,3 @@
 
 @include('partials.contact')
 @endsection
-
-@section('extra-scripts')
-<script src="{{ asset('js/auth.js') }}"></script>
-@endsection

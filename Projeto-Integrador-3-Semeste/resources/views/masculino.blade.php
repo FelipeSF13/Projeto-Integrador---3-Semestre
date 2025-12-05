@@ -4,14 +4,14 @@
 
 @section('content')
 
-    <nav class="breadcrumb">
-        <a href="{{ route('index') }}">Página Inicial</a>
-        <span>&gt;</span>
-        <span class="current">Masculino</span>
-    </nav>
-
     <div class="listing-layout">
         <aside class="listing-sidebar">
+                <nav class="breadcrumb">
+                    <a href="{{ route('index') }}">Página Inicial</a>
+                    <span>&gt;</span>
+                    <span class="current">Masculino</span>
+                </nav>
+
                 <div class="filter-group">
                     <h3 class="filter-title">Filtros</h3>
                     <div class="filter-options" id="category-filters">
@@ -40,6 +40,18 @@
                     </div>
                 </div>
 
+                <div class="filter-group">
+                    <h3 class="filter-title">Marca</h3>
+                    <div class="filter-options" id="brand-filters">
+                        <a href="{{ route('masculino') }}" class="filter-item {{ !$selectedBrand ? 'active' : '' }}"><span>Todas</span> <span>&gt;</span></a>
+                        <a href="{{ route('masculino', ['brand' => 'VERSACE']) }}" class="filter-item {{ $selectedBrand === 'VERSACE' ? 'active' : '' }}"><span>VERSACE</span> <span>&gt;</span></a>
+                        <a href="{{ route('masculino', ['brand' => 'ZARA']) }}" class="filter-item {{ $selectedBrand === 'ZARA' ? 'active' : '' }}"><span>ZARA</span> <span>&gt;</span></a>
+                        <a href="{{ route('masculino', ['brand' => 'GUCCI']) }}" class="filter-item {{ $selectedBrand === 'GUCCI' ? 'active' : '' }}"><span>GUCCI</span> <span>&gt;</span></a>
+                        <a href="{{ route('masculino', ['brand' => 'PRADA']) }}" class="filter-item {{ $selectedBrand === 'PRADA' ? 'active' : '' }}"><span>PRADA</span> <span>&gt;</span></a>
+                        <a href="{{ route('masculino', ['brand' => 'CALVIN KLEIN']) }}" class="filter-item {{ $selectedBrand === 'CALVIN KLEIN' ? 'active' : '' }}"><span>CALVIN KLEIN</span> <span>&gt;</span></a>
+                    </div>
+                </div>
+
                 <button class="btn btn-dark" id="apply-filters" style="width: 100%;">Aplicar Filtros</button>
             </aside>
 
@@ -53,7 +65,14 @@
                     </h1>
                     <div class="sort-by">
                         <span id="filter-counter">Carregando produtos...</span>
-                        <span>Por: <strong>Mais popular &vee;</strong></span>
+                        <select id="sort-select" class="sort-select">
+                            <option value="popular">Mais popular</option>
+                            <option value="newest">Mais recentes</option>
+                            <option value="price-asc">Menor preço</option>
+                            <option value="price-desc">Maior preço</option>
+                            <option value="name-asc">A até Z</option>
+                            <option value="name-desc">Z até A</option>
+                        </select>
                     </div>
                 </div>
 
@@ -74,9 +93,9 @@
                             elseif (str_contains($nameLower, 'ouro')) { $color = 'ouro'; }
                         @endphp
                         <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}" data-price="{{ $product->price }}" data-color="{{ $color }}" data-type="{{ $type }}">
-                            <img src="{{ $product->image }}" 
+                            <img src="{{ asset('img/' . $product->image) }}" 
                                  alt="{{ $product->name }}"
-                                 onerror="this.src='https://via.placeholder.com/500x500?text=Joia'">
+                                 onerror="this.src='{{ asset('img/placeholder.svg') }}'">
                             <h3>{{ $product->name }}</h3>
                             <p class="price">
                                 <span class="sale">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
@@ -105,10 +124,40 @@
 @endsection
 
 @section('extra-scripts')
-<script src="{{ asset('js/filters.js') }}"></script>
-<script src="{{ asset('js/product-images.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sortSelect = document.getElementById('sort-select');
+        const productListing = document.getElementById('product-listing');
+
+        if (!sortSelect || !productListing) return;
+
+        sortSelect.addEventListener('change', (e) => {
+            const sortOption = e.target.value;
+            const products = Array.from(productListing.querySelectorAll('.product-card'));
+
+            products.sort((a, b) => {
+                switch(sortOption) {
+                    case 'newest':
+                        return b.getAttribute('data-productid') - a.getAttribute('data-productid');
+                    case 'price-asc':
+                        return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+                    case 'price-desc':
+                        return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+                    case 'name-asc':
+                        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent, 'pt-BR');
+                    case 'name-desc':
+                        return b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent, 'pt-BR');
+                    case 'popular':
+                    default:
+                        return 0;
+                }
+            });
+
+            // Re-insere os produtos ordenados
+            products.forEach(product => {
+                productListing.appendChild(product);
+            });
+        });
+    });
+</script>
 @endsection
-    <script src="{{ asset('js/product-images.js') }}"></script>
-    <script src="{{ asset('js/user-menu.js') }}"></script>
-</body>
-</html>

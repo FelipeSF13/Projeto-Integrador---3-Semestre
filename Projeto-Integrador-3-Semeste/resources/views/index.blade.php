@@ -11,12 +11,15 @@
             <div class="brands-scroll-content">
                 @php
                     $brands = ['VERSACE', 'ZARA', 'GUCCI', 'PRADA', 'CALVIN KLEIN'];
-                    $categories = ['feminino', 'masculino'];
                 @endphp
                 @foreach($brands as $brand)
-                    @foreach($categories as $category)
-                        <span data-brand="{{ $brand }}" data-category="{{ $category }}" title="Clique para filtrar {{ $category }} de {{ $brand }}">{{ $brand }}</span>
-                    @endforeach
+                    <span class="brand-item" data-brand="{{ $brand }}" title="Clique para filtrar por {{ $brand }}">{{ $brand }}</span>
+                @endforeach
+                @foreach($brands as $brand)
+                    <span class="brand-item" data-brand="{{ $brand }}" title="Clique para filtrar por {{ $brand }}">{{ $brand }}</span>
+                @endforeach
+                @foreach($brands as $brand)
+                    <span class="brand-item" data-brand="{{ $brand }}" title="Clique para filtrar por {{ $brand }}">{{ $brand }}</span>
                 @endforeach
             </div>
         </section>
@@ -26,7 +29,7 @@
             <div class="product-grid" id="product-grid-container">
                 @forelse($products->take(6) as $product)
                     <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}">
-                        <img src="{{ asset('img/placeholder.svg') }}" 
+                        <img src="{{ asset('img/' . $product->image) }}" 
                              alt="{{ $product->name }}">
                         <h3>{{ $product->name }}</h3>
                         <p class="price">
@@ -55,13 +58,35 @@
 @endsection
 
 @section('extra-scripts')
-<script src="{{ asset('js/product-images.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // ===== FILTRO DE MARCAS =====
+        const brandItems = document.querySelectorAll('.brand-item');
+        
+        brandItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const selectedBrand = item.getAttribute('data-brand');
+                
+                // Remover active de todos
+                brandItems.forEach(b => b.classList.remove('active'));
+                
+                // Adicionar active ao clicado
+                item.classList.add('active');
+                
+                // Redirecionar para página feminina com filtro de marca
+                window.location.href = `/feminino?brand=${selectedBrand}`;
+            });
+        });
+
+        // ===== VER MAIS PRODUTOS =====
         // Dados de todos os produtos passados do PHP para JS
         const allProducts = @json($products);
         const productsPerPage = 6;
         let currentIndex = productsPerPage;
+        
+        // Array de imagens disponíveis para usar como fallback
+        const availableImages = ['anel1.png', 'anel2.png', 'anelverde.webp', 'colar1.png', 'colar2.png', 'relogio1.png'];
         
         const loadMoreBtn = document.getElementById('load-more-btn');
         const gridContainer = document.getElementById('product-grid-container');
@@ -78,8 +103,12 @@
                 productLink.href = `/produto/${product.id}`;
                 productLink.className = 'product-card';
                 productLink.setAttribute('data-productid', product.id);
+                
+                // Usar imagem do produto ou fallback para a primeira disponível
+                const imageUrl = product.image ? `{{ asset('img/') }}${product.image}` : `{{ asset('img/') }}${availableImages[i % availableImages.length]}`;
+                
                 productLink.innerHTML = `
-                    <img src="{{ asset('img/placeholder.svg') }}" alt="${product.name}">
+                    <img src="${imageUrl}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p class="price">
                         <span class="sale">R$ ${parseFloat(product.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>

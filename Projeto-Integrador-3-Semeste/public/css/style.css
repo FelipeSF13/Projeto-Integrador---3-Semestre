@@ -31,6 +31,8 @@
 @import 'atomic/organisms/_admin-form.css'; 
 @import 'atomic/organisms/_admin-header.css'; 
 @import 'atomic/organisms/_admin-table.css'; 
+@import 'atomic/organisms/_admin-utilities.css'; 
+@import 'atomic/organisms/_brands-bar.css'; 
 
 /* 4. Templates (Layouts de página) */
 @import 'atomic/templates/_layout.css';
@@ -38,5 +40,6 @@
 @import 'atomic/templates/_listing-page.css';
 @import 'atomic/templates/_banner.css'; 
 @import 'atomic/templates/_dashboard.css'; 
+@import 'atomic/templates/_info.css'; 
 
 
