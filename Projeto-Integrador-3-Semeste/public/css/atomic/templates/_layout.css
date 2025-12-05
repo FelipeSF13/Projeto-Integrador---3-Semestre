@@ -60,3 +60,76 @@
     font-size: 0.8em; 
     color: var(--admin-secondary-text); 
 }
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .brands-bar {
+        padding: 12px;
+        font-size: 14px;
+        gap: 10px;
+    }
+}
+
+/* Mobile (até 768px) */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    .brands-bar {
+        flex-wrap: wrap;
+        padding: 10px;
+        font-size: 12px;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .banner img {
+        max-height: 300px;
+        object-fit: cover;
+    }
+
+    .admin-card {
+        padding: 1rem;
+    }
+
+    .admin-card h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Mobile Pequeno (até 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .brands-bar {
+        padding: 8px;
+        font-size: 11px;
+        gap: 5px;
+    }
+
+    .banner img {
+        max-height: 200px;
+    }
+
+    .admin-card {
+        padding: 0.75rem;
+    }
+
+    .admin-card h2 {
+        font-size: 1.1rem;
+    }
+
+    .subtitle {
+        font-size: 0.85em;
+    }
+}

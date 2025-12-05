@@ -14,19 +14,61 @@ class ProductController extends Controller
 
     public function feminino()
     {
-        $products = Product::where('category', 'feminino')->get();
-        return view('feminino', compact('products'));
+        $query = Product::where('category', 'feminino');
+        
+        // Filtro de marca via query string
+        if (request('brand')) {
+            $query->where('brand', request('brand'));
+        }
+        
+        $products = $query->get();
+        $selectedBrand = request('brand');
+        return view('feminino', compact('products', 'selectedBrand'));
     }
 
     public function masculino()
     {
-        $products = Product::where('category', 'masculino')->get();
-        return view('masculino', compact('products'));
+        $query = Product::where('category', 'masculino');
+        
+        // Filtro de marca via query string
+        if (request('brand')) {
+            $query->where('brand', request('brand'));
+        }
+        
+        $products = $query->get();
+        $selectedBrand = request('brand');
+        return view('masculino', compact('products', 'selectedBrand'));
     }
 
     public function show($id)
     {
         $product = Product::findOrFail($id);
         return view('detalhe-produto', compact('product'));
+    }
+
+    public function getProducts($category = null)
+    {
+        $query = Product::query();
+        
+        if ($category && $category !== 'todos') {
+            $query->where('category', $category);
+        }
+
+        // Filtro de preço
+        if (request('max_price')) {
+            $query->where('price', '<=', request('max_price'));
+        }
+
+        // Filtro de cor (simulado - em um banco real seria um campo)
+        if (request('color')) {
+            // Implementar lógica de filtro de cor se necessário
+        }
+
+        $products = $query->get();
+
+        return response()->json([
+            'products' => $products,
+            'total' => $products->count()
+        ]);
     }
 }

@@ -1,49 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel ADM - Produtos em Estoque</title> 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    
-</head>
-<body class="admin-body-bg"> 
+@extends('layouts.admin')
 
-    <header class="admin-header">
-         <div class="admin-header-content container">
-            <nav aria-label="breadcrumb" class="admin-breadcrumbs">
-                <ol>
-                    <li><a href="{{ route('admin.dashboard') }}">Painel</a></li> 
-                    <li><span>&gt;</span></li>
-                    <li aria-current="page">Usuários Cadastrados</li> 
-                </ol>
-            </nav>
-            <div class="admin-header-right">
-                <div class="admin-search">
-                    <i class="fas fa-search"></i>
-                    <input type="search" placeholder="Pesquisar">
-                </div>
-                <button class="icon-button notifications" aria-label="Notificações">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge notification-badge">3</span> 
-                </button>
-                <div class="user-profile">
-                    <span class="user-initial">J</span>
-                    <span class="user-name">Júlia</span>
-                </div>
-            </div>
-        </div>
-    </header>
+@section('title', 'Painel ADM - Produtos em Estoque')
 
-    <main class="admin-main container">
-        <div class="admin-card"> 
+@section('breadcrumb', 'Produtos em Estoque')
+
+@section('content')
+<div class="admin-card"> 
             <h2>Em estoque</h2>
-            <p class="subtitle">Produtos em Estoque</p>
+            <p class="subtitle">Produtos em Estoque (Total: {{ $products->total() }})</p>
+
+            @if($message = session('success'))
+                <div style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+                    {{ $message }}
+                </div>
+            @endif
+
+            @if($message = session('error'))
+                <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+                    {{ $message }}
+                </div>
+            @endif
 
             <nav class="admin-tabs">
-                <a href="{{ route('admin.produtos') }}" class="active">Em estoque</a> 
-                <a href="{{ route('admin.usuarios') }}">Usuários</a> 
-                <a href="{{ route('admin.cadastrar-produto') }}">Cadastrar Produtos</a> 
+                <a href="{{ route('adm-produto') }}" class="active">Em estoque</a> 
+                <a href="{{ route('adm-usuarios') }}">Usuários</a> 
+                <a href="{{ route('adm-cadastro') }}" class="btn btn-dark" style="margin-left: auto;">+ Novo Produto</a> 
             </nav>
 
             <div class="admin-action-bar">
@@ -55,85 +36,60 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" aria-label="Selecionar todos"></th>
                             <th>Produto</th>
                             <th>Categoria</th>
+                            <th>Marca</th>
                             <th>ID</th>
                             <th>Preço</th>
+                            <th>Estoque</th>
                             <th>Data</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Relógio Rolex"></td>
-                            <td>Relógio Rolex</td>
-                            <td><span class="badge badge-relogio">Relógio</span></td>
-                            <td>1</td>
-                            <td>R$ 1.999,00</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Corrente de Prata"></td>
-                            <td>Corrente de Prata</td>
-                            <td><span class="badge badge-corrente">Corrente</span></td>
-                            <td>2</td>
-                            <td>R$ 750</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Bracelete de Prata"></td>
-                            <td>Bracelete de Prata</td>
-                            <td><span class="badge badge-pulseira">Pulseira</span></td>
-                            <td>3</td>
-                            <td>R$ 500</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Relógio de Luxo"></td>
-                            <td>Relógio de Luxo</td>
-                            <td><span class="badge badge-relogio">Relógio</span></td>
-                            <td>4</td>
-                            <td>R$ 30.000</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Brinco de Ouro"></td>
-                            <td>Brinco de Ouro</td>
-                            <td><span class="badge badge-brincos">Brincos</span></td>
-                            <td>5</td>
-                            <td>R$ 900</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Anel de Esmeralda"></td>
-                            <td>Anel de Esmeralda</td>
-                            <td><span class="badge badge-anel">Anel</span></td>
-                            <td>6</td>
-                            <td>R$ 300</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox" aria-label="Selecionar Colar de prata"></td>
-                            <td>Colar de prata</td>
-                            <td><span class="badge badge-colar">Colar</span></td>
-                            <td>7</td>
-                            <td>R$ 2.000</td>
-                            <td>10.03.2025 <span class="time">11:16 AM</span></td>
-                            <td><button class="icon-button actions" aria-label="Mais ações"><i class="fas fa-ellipsis-h"></i></button></td>
-                        </tr>
+                        @forelse($products as $product)
+                            <tr>
+                                <td>{{ $product->name }}</td>
+                                <td>
+                                    <span class="badge badge-{{ $product->category }}">
+                                        {{ ucfirst($product->category) }}
+                                    </span>
+                                </td>
+                                <td>{{ $product->brand ?? '-' }}</td>
+                                <td>{{ $product->id }}</td>
+                                <td>R$ {{ number_format($product->price, 2, ',', '.') }}</td>
+                                <td>
+                                    <span class="stock-badge {{ $product->stock < 5 ? 'stock-low' : 'stock-ok' }}">
+                                        {{ $product->stock }}
+                                    </span>
+                                </td>
+                                <td>{{ $product->created_at->format('d.m.Y') }} <span class="time">{{ $product->created_at->format('H:i') }}</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('adm-produto-editar', $product->id) }}" class="btn btn-sm btn-secondary">Editar</a>
+                                        <form action="{{ route('adm-produto-delete', $product->id) }}" method="POST" class="inline-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Deletar</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="no-products">
+                                    <p>Nenhum produto encontrado. <a href="{{ route('adm-cadastro') }}">Criar novo produto</a></p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-             </div>
-    </main>
 
-    <script src="{{ asset('js/script.js') }}"></script> 
-</body>
-</html>
+            @if($products->hasPages())
+                <div style="margin-top: 20px;">
+                    {{ $products->links() }}
+                </div>
+            @endif
+        </div>
+@endsection
