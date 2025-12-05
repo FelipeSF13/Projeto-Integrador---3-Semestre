@@ -3,6 +3,7 @@
 @section('content')
 
     <div class="container">
+        <button class="btn-back" data-history-back style="margin-bottom: 15px;">Voltar</button>
         <nav class="breadcrumb">
             <a href="{{ route('index') }}">Página Inicial</a>
             <span>&gt;</span>

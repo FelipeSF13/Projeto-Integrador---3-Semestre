@@ -33,6 +33,7 @@
 @import 'atomic/organisms/_admin-table.css'; 
 @import 'atomic/organisms/_admin-utilities.css'; 
 @import 'atomic/organisms/_brands-bar.css'; 
+@import 'atomic/organisms/_history-widget.css'; 
 
 /* 4. Templates (Layouts de página) */
 @import 'atomic/templates/_layout.css';

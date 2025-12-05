@@ -6,6 +6,7 @@
 
     <div class="listing-layout">
         <aside class="listing-sidebar">
+                <button class="btn-back" data-history-back style="margin-bottom: 15px; width: 100%;">Voltar</button>
                 <nav class="breadcrumb">
                     <a href="{{ route('index') }}">Página Inicial</a>
                     <span>&gt;</span>
@@ -43,12 +44,12 @@
                 <div class="filter-group">
                     <h3 class="filter-title">Marca</h3>
                     <div class="filter-options" id="brand-filters">
-                        <a href="{{ route('feminino') }}" class="filter-item {{ !$selectedBrand ? 'active' : '' }}"><span>Todas</span> <span>&gt;</span></a>
-                        <a href="{{ route('feminino', ['brand' => 'VERSACE']) }}" class="filter-item {{ $selectedBrand === 'VERSACE' ? 'active' : '' }}"><span>VERSACE</span> <span>&gt;</span></a>
-                        <a href="{{ route('feminino', ['brand' => 'ZARA']) }}" class="filter-item {{ $selectedBrand === 'ZARA' ? 'active' : '' }}"><span>ZARA</span> <span>&gt;</span></a>
-                        <a href="{{ route('feminino', ['brand' => 'GUCCI']) }}" class="filter-item {{ $selectedBrand === 'GUCCI' ? 'active' : '' }}"><span>GUCCI</span> <span>&gt;</span></a>
-                        <a href="{{ route('feminino', ['brand' => 'PRADA']) }}" class="filter-item {{ $selectedBrand === 'PRADA' ? 'active' : '' }}"><span>PRADA</span> <span>&gt;</span></a>
-                        <a href="{{ route('feminino', ['brand' => 'CALVIN KLEIN']) }}" class="filter-item {{ $selectedBrand === 'CALVIN KLEIN' ? 'active' : '' }}"><span>CALVIN KLEIN</span> <span>&gt;</span></a>
+                        <button class="filter-item" data-brand="todos"><span>Todas</span> <span>&gt;</span></button>
+                        <button class="filter-item" data-brand="VERSACE"><span>VERSACE</span> <span>&gt;</span></button>
+                        <button class="filter-item" data-brand="ZARA"><span>ZARA</span> <span>&gt;</span></button>
+                        <button class="filter-item" data-brand="GUCCI"><span>GUCCI</span> <span>&gt;</span></button>
+                        <button class="filter-item" data-brand="PRADA"><span>PRADA</span> <span>&gt;</span></button>
+                        <button class="filter-item" data-brand="CALVIN KLEIN"><span>CALVIN KLEIN</span> <span>&gt;</span></button>
                     </div>
                 </div>
 
@@ -59,8 +60,8 @@
                 <div class="listing-header">
                     <h1>Feminino
                         @if($selectedBrand ?? false)
-                            <span style="font-size: 0.7em; color: #999; margin-left: 10px;">- {{ $selectedBrand }}</span>
-                            <a href="{{ route('feminino') }}" style="font-size: 0.7em; margin-left: 10px; color: #007bff; text-decoration: underline;">Limpar filtro</a>
+                            <span class="filter-info">- {{ $selectedBrand }}</span>
+                            <a href="{{ route('feminino') }}" class="filter-clear">Limpar filtro</a>
                         @endif
                     </h1>
                     <div class="sort-by">
@@ -90,7 +91,7 @@
                             if (str_contains($nameLower, 'prata')) { $color = 'prata'; }
                             elseif (str_contains($nameLower, 'ouro')) { $color = 'ouro'; }
                         @endphp
-                        <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}" data-price="{{ $product->price }}" data-color="{{ $color }}" data-type="{{ $type }}">
+                        <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}" data-price="{{ $product->price }}" data-color="{{ $color }}" data-type="{{ $type }}" data-brand="{{ $product->brand }}">
                             <img src="{{ asset('img/' . $product->image) }}" 
                                  alt="{{ $product->name }}"
                                  onerror="this.src='{{ asset('img/placeholder.svg') }}'">

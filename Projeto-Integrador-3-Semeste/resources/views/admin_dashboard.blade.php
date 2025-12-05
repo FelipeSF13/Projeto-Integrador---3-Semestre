@@ -9,18 +9,18 @@
             <h2>Painel Principal</h2>
             <p class="subtitle">Bem-vindo ao administrador da loja. Selecione uma opção para gerenciar sua loja.</p>
 
-            <div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;">
-                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-                    <h3 style="margin: 0; color: #999;">Total de Produtos</h3>
-                    <p style="font-size: 2.5em; margin: 10px 0 0 0; font-weight: bold;">{{ $totalProducts ?? 0 }}</p>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total de Produtos</h3>
+                    <p>{{ $totalProducts ?? 0 }}</p>
                 </div>
-                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-                    <h3 style="margin: 0; color: #999;">Usuários Cadastrados</h3>
-                    <p style="font-size: 2.5em; margin: 10px 0 0 0; font-weight: bold;">{{ $totalUsers ?? 0 }}</p>
+                <div class="stat-card">
+                    <h3>Usuários Cadastrados</h3>
+                    <p>{{ $totalUsers ?? 0 }}</p>
                 </div>
-                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-                    <h3 style="margin: 0; color: #999;">Produtos com Baixo Estoque</h3>
-                    <p style="font-size: 2.5em; margin: 10px 0 0 0; font-weight: bold; color: #d32f2f;">{{ $lowStockProducts ?? 0 }}</p>
+                <div class="stat-card alert">
+                    <h3>Produtos com Baixo Estoque</h3>
+                    <p>{{ $lowStockProducts ?? 0 }}</p>
                 </div>
             </div>
 

@@ -89,10 +89,17 @@ export const FiltersModule = {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
                     const chosen = item.getAttribute('data-brand');
-                    if (this.filterState.brand === chosen) {
+                    
+                    // Se clicar em "Todas" ou no item já selecionado, limpa o filtro
+                    if (chosen === 'todos' || this.filterState.brand === chosen) {
                         this.filterState.brand = null;
                         brandFilters.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+                        // Marca "Todas" como ativo quando limpar
+                        if (chosen === 'todos') {
+                            item.classList.add('active');
+                        }
                     } else {
+                        // Seleciona uma marca específica
                         brandFilters.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
                         item.classList.add('active');
                         this.filterState.brand = chosen;
@@ -117,10 +124,25 @@ export const FiltersModule = {
         const filtered = this.allProducts.filter(p => {
             let show = true;
 
-            if (p.price > this.filterState.maxPrice) show = false;
-            if (this.filterState.color && p.color !== this.filterState.color) show = false;
-            if (this.filterState.brand && p.brand !== this.filterState.brand) show = false;
-            if (this.filterState.category !== 'todos' && p.type !== this.filterState.category) show = false;
+            // Filtro de preço
+            if (p.price > this.filterState.maxPrice) {
+                show = false;
+            }
+            
+            // Filtro de cor (só aplica se uma cor for selecionada)
+            if (this.filterState.color && p.color && p.color !== this.filterState.color) {
+                show = false;
+            }
+            
+            // Filtro de marca (só aplica se uma marca for selecionada)
+            if (this.filterState.brand && p.brand && p.brand !== this.filterState.brand) {
+                show = false;
+            }
+            
+            // Filtro de categoria
+            if (this.filterState.category !== 'todos' && p.type !== this.filterState.category) {
+                show = false;
+            }
 
             return show;
         });

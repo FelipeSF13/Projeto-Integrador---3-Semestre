@@ -10,9 +10,15 @@ import { SortingModule } from './modules/products/sorting.js';
 import { BrandsBarModule } from './modules/ui/brands-carousel.js';
 import { MenuModule } from './modules/ui/menu.js';
 import { ContactFormModule } from './modules/ui/contact-form.js';
+import { CartModule } from './modules/cart/cart-manager.js';
+import { AddToCartModule } from './modules/cart/add-to-cart.js';
+import { HistoryManager } from './modules/navigation/history-manager.js';
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize navigation history (FIRST - to track page visit)
+    HistoryManager.init();
+
     // Initialize authentication
     AuthModule.init();
 
@@ -28,6 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize contact form
     ContactFormModule.init();
+
+    // Initialize add to cart button
+    AddToCartModule.init();
+
+    // Initialize cart (if on cart page)
+    if (document.getElementById('cart-items')) {
+        CartModule.init();
+    }
 
     // Initialize alert animations
     initializeAlertAnimations();

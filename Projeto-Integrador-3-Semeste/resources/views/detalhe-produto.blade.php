@@ -5,6 +5,7 @@
 @section('content')
     
     <div class="container">
+        <button class="btn-back" data-history-back style="margin-bottom: 15px;">Voltar</button>
         <nav class="breadcrumb">
             <a href="{{ route('index') }}">Página Inicial</a>
             <span>&gt;</span>
@@ -26,7 +27,7 @@
                          onerror="this.src='{{ asset('img/placeholder.svg') }}'">
                 </div>
             </div>
-            <div class="product-info">
+            <div class="product-info" data-product-id="{{ $product->id }}" data-product-name="{{ $product->name }}" data-product-price="{{ $product->price }}" data-product-image="{{ asset('img/' . $product->image) }}">
                 <h1>{{ $product->name }}</h1>
                 <div class="rating-price">
                     <div class="rating">
@@ -43,9 +44,9 @@
                         <p class="stock-details">
                             <strong>Status:</strong> <span class="availability-status">
                                 @if($product->stock > 0)
-                                    <span style="color: #198754;">✓ Disponível</span>
+                                    <span class="text-success">✓ Disponível</span>
                                 @else
-                                    <span style="color: #dc3545;">✗ Indisponível</span>
+                                    <span class="text-danger">✗ Indisponível</span>
                                 @endif
                             </span>
                         </p>
@@ -64,7 +65,7 @@
                         <span class="quantity-value">1</span>
                         <button>+</button>
                     </div>
-                    <a href="{{ route('carrinho') }}" class="btn btn-dark">Adicionar ao carrinho</a>
+                    <button class="btn btn-dark add-to-cart-btn">Adicionar ao carrinho</button>
                 </div>
             </div>
         </section>

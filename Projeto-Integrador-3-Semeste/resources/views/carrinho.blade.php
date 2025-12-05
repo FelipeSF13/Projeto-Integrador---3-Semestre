@@ -3,86 +3,46 @@
 @section('title', 'Carrinho - Elegance Joias')
 
 @section('content')
-    <div class="container">
-        <nav class="breadcrumb">
-            <a href="{{ route('index') }}">Página Inicial</a>
-            <span>&gt;</span>
-            <span class="current">Carrinho</span>
-        </nav>
+    @if(!auth()->check())
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="{{ route('index') }}">Página Inicial</a>
+                <span>&gt;</span>
+                <span class="current">Carrinho</span>
+            </nav>
+            
+            <div style="text-align: center; padding: 60px 20px;">
+                <h1 class="section-title">Acesso Negado</h1>
+                <p class="text-secondary" style="font-size: 16px; margin-bottom: 30px;">
+                    Para acessar o carrinho, você precisa estar logado na sua conta.
+                </p>
+                <a href="{{ route('login') }}" class="btn btn-dark">Fazer Login</a>
+                <span class="auth-divider">ou</span>
+                <a href="{{ route('cadastro') }}" class="btn btn-outline">Criar Conta</a>
+            </div>
+        </div>
+    @else
+        <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button class="btn-back" data-history-back>Voltar</button>
+            <nav class="breadcrumb">
+                <a href="{{ route('index') }}">Página Inicial</a>
+                <span>&gt;</span>
+                <span class="current">Carrinho</span>
+            </nav>
+        </div>
 
         <h1 class="section-title" style="text-align: left; margin-top: 0; margin-bottom: var(--space-xl);">Seu carrinho</h1>
 
         <div class="cart-layout">
-            <section class="cart-items">
-                <article class="cart-item" data-price="145.50">
-                    <div class="item-details">
-                        <img src="{{ asset('img/anel1.png') }}" alt="Colar de Ouro">
-                        <div>
-                            <h2>Colar de Ouro</h2>
-                            <p>Tamanho: 45 cm</p>
-                            <p>Cor: Ouro</p>
-                            <p class="price">R$145,50</p>
-                        </div>
-                    </div>
-                    <div class="item-controls">
-                        <div class="quantity-selector">
-                            <button class="decrease-qty">-</button>
-                            <span class="quantity-value">1</span>
-                            <button class="increase-qty">+</button>
-                        </div>
-                        <button class="delete-item-btn" title="Remover">
-                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
-                        </button>
-                    </div>
-                </article>
-
-                <article class="cart-item" data-price="180.45">
-                    <div class="item-details">
-                       <img src="{{ asset('img/anel2.png') }}" alt="Colar de Ouro">
-                        <div>
-                            <h2>Colar de Ouro</h2>
-                            <p>Tamanho: 45 cm</p>
-                            <p>Cor: Ouro</p>
-                            <p class="price">R$180,45</p>
-                        </div>
-                    </div>
-                     <div class="item-controls">
-                        <div class="quantity-selector">
-                            <button class="decrease-qty">-</button>
-                            <span class="quantity-value">1</span>
-                            <button class="increase-qty">+</button>
-                        </div>
-                        <button class="delete-item-btn" title="Remover">
-                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
-                        </button>
-                    </div>
-                </article>
-                
-                 <article class="cart-item" data-price="240.25">
-                    <div class="item-details">
-                        <img src="{{ asset('img/colar2.png') }}" alt="Colar de Ouro">
-                        <div>
-                            <h2>Colar de Ouro</h2>
-                            <p>Tamanho: 40 cm</p>
-                            <p>Cor: Ouro</p>
-                            <p class="price">R$240,25</p>
-                        </div>
-                    </div>
-                     <div class="item-controls">
-                        <div class="quantity-selector">
-                            <button class="decrease-qty">-</button>
-                            <span class="quantity-value">1</span>
-                            <button class="increase-qty">+</button>
-                        </div>
-                        <button class="delete-item-btn" title="Remover">
-                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
-                        </button>
-                    </div>
-                </article>
+            <section class="cart-items" id="cart-items">
+                <!-- Carrinho carregado dinamicamente via JavaScript -->
+                <div style="text-align: center; padding: 40px; color: #999;">
+                    <p>Carregando carrinho...</p>
+                </div>
             </section>
             
             <aside class="cart-summary">
-           <aside class="cart-summary">
             <h2>Resumo</h2>
             <div class="summary-row">
                 <span>Subtotal</span>
@@ -126,6 +86,8 @@
             <button class="btn btn-dark btn-checkout">Finalizar Compra &rarr;</button> 
         </aside>
         </div>
+        </div>
 
-@include('partials.contact')
+        @include('partials.contact')
+    @endif
 @endsection
