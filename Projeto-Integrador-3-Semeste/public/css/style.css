@@ -2,7 +2,7 @@
 
 /* 0. Fontes Externas */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap');
-
+ 
 /* 1. Átomos (Base) */
 @import 'atomic/atoms/_variables.css';
 @import 'atomic/atoms/_reset.css';
