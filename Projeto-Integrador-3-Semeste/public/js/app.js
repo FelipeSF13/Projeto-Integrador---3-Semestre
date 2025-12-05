@@ -6,6 +6,7 @@
 // Import modules
 import { AuthModule } from './modules/auth/authentication.js';
 import { FiltersModule } from './modules/products/filters.js';
+import { SortingModule } from './modules/products/sorting.js';
 import { BrandsBarModule } from './modules/ui/brands-carousel.js';
 import { MenuModule } from './modules/ui/menu.js';
 import { ContactFormModule } from './modules/ui/contact-form.js';
@@ -18,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize product filters
     FiltersModule.init();
 
-    // Initialize brands carousel
+    // Initialize product sorting
+    SortingModule.init();    // Initialize brands carousel
     BrandsBarModule.init();
 
     // Initialize navigation menus

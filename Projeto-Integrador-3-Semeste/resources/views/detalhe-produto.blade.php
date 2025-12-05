@@ -34,6 +34,23 @@
                     </div>
                     <p class="info-price">R$ {{ number_format($product->price, 2, ',', '.') }}</p>
                 </div>
+                <div class="stock-info">
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                        <p class="stock-details">
+                            <strong>Estoque:</strong> <span class="stock-value">{{ $product->stock }} unidade(s)</span>
+                        </p>
+                    @else
+                        <p class="stock-details">
+                            <strong>Status:</strong> <span class="availability-status">
+                                @if($product->stock > 0)
+                                    <span style="color: #198754;">✓ Disponível</span>
+                                @else
+                                    <span style="color: #dc3545;">✗ Indisponível</span>
+                                @endif
+                            </span>
+                        </p>
+                    @endif
+                </div>
                 <p class="description">
                     {{ $product->description ?? 'Descrição não disponível para este produto.' }}
                 </p>
