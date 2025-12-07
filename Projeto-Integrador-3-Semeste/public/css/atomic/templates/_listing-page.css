@@ -82,6 +82,44 @@
 .price-slider {
     width: 100%;
     margin: var(--space-lg) 0;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-border-darker);
+}
+
+.price-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-border-darker);
+}
+
+.price-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-border-darker);
+}
+
+.price-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-dark);
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    margin-top: -6px;
+}
+
+.price-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-dark);
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
 }
 
 .price-range {

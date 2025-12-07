@@ -26,7 +26,7 @@
 
         <section class="container">
             <h2 class="section-title">Novidades</h2>
-            <div class="product-grid" id="product-grid-container">
+            <div class="product-grid" id="product-grid-container" data-inline-load-more="true">
                 @forelse($products->take(6) as $product)
                     <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}">
                         <img src="{{ asset('img/' . $product->image) }}" 
@@ -105,7 +105,9 @@
                 productLink.setAttribute('data-productid', product.id);
                 
                 // Usar imagem do produto ou fallback para a primeira disponível
-                const imageUrl = product.image ? `{{ asset('img/') }}${product.image}` : `{{ asset('img/') }}${availableImages[i % availableImages.length]}`;
+                const imageUrl = product.image
+                    ? `{{ asset('img') }}/${product.image}`
+                    : `{{ asset('img') }}/${availableImages[i % availableImages.length]}`;
                 
                 productLink.innerHTML = `
                     <img src="${imageUrl}" alt="${product.name}">

@@ -117,13 +117,33 @@ export const HistoryManager = {
      * Volta para a página anterior
      */
     goBack() {
-        const previousPage = this.getPreviousPage();
-        if (previousPage) {
-            window.location.href = previousPage.url;
-        } else {
-            // Se não há histórico, volta para home
-            window.location.href = '/';
+        // 1) Tenta usar nosso histórico persistido
+        const history = this.getHistory();
+        if (history.length >= 2) {
+            // Remove página atual
+            history.pop();
+            // Pega a anterior e também remove para evitar loop
+            const target = history.pop();
+            localStorage.setItem(this.storageKey, JSON.stringify(history));
+            if (target) {
+                window.location.href = target.url;
+                return;
+            }
         }
+
+        // 2) Fallback: histórico do navegador
+        if (window.history.length > 1) {
+            window.history.back();
+            return;
+        }
+
+        // 3) Fallback final: referrer ou home
+        if (document.referrer) {
+            window.location.href = document.referrer;
+            return;
+        }
+
+        window.location.href = '/';
     },
 
     /**
@@ -139,8 +159,8 @@ export const HistoryManager = {
             });
 
             // Mostra/esconde botão baseado no histórico
-            const previousPage = this.getPreviousPage();
-            if (!previousPage) {
+            const history = this.getHistory();
+            if (history.length < 2 && !document.referrer && window.history.length <= 1) {
                 button.style.display = 'none';
             }
         });

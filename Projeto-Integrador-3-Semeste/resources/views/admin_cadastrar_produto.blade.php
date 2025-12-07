@@ -10,6 +10,18 @@
             <h2>Cadastrar produtos</h2>
             <p class="subtitle">Adicione um novo produto ao catálogo</p>
 
+            @if(session('success'))
+                <div style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+                    <strong>✓ Sucesso!</strong> {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+                    <strong>✗ Erro!</strong> {{ session('error') }}
+                </div>
+            @endif
+
             @if ($errors->any())
                 <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
                     <strong>Erro ao validar formulário:</strong>
@@ -63,6 +75,16 @@
                         <input type="text" id="brand" name="brand" value="{{ old('brand') }}" placeholder="Ex: VERSACE, GUCCI, PRADA">
                     </div>
                     <div class="form-group">
+                        <label for="color">Cor</label>
+                        <select id="color" name="color">
+                            <option value="">Selecione uma cor</option>
+                            <option value="ouro" {{ old('color') === 'ouro' ? 'selected' : '' }}>Ouro</option>
+                            <option value="prata" {{ old('color') === 'prata' ? 'selected' : '' }}>Prata</option>
+                            <option value="neutro" {{ old('color') === 'neutro' ? 'selected' : '' }}>Neutro</option>
+                        </select>
+                        @error('color')<span class="error-text">{{ $message }}</span>@enderror
+                    </div>
+                    <div class="form-group">
                         <label for="stock">Quantidade em Estoque *</label>
                         <input type="number" id="stock" name="stock" value="{{ old('stock') }}" required placeholder="Ex: 10" min="0"> 
                         @error('stock')<span class="error-text">{{ $message }}</span>@enderror
@@ -71,12 +93,14 @@
                 </div>
 
                 <div class="image-upload-area">
-                     <div class="image-placeholder">
+                     <div class="image-placeholder" id="image-preview">
                          <i class="fas fa-image fa-3x"></i>
                          <p class="form-help-text">As imagens serão geradas automaticamente com base no tipo de produto</p>
+                         <img id="preview-img" style="display: none; max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px;" alt="Preview">
                      </div>
                      <label for="product_image" class="btn btn-dark">Carregar Imagem (Opcional)</label>
-                     <input type="file" id="product_image" name="image" accept="image/*" style="display: none;"> 
+                     <input type="file" id="product_image" name="image" accept="image/*" style="display: none;" onchange="previewImage(event)"> 
+                     @error('image')<span class="error-text" style="color: red; font-size: 0.9em; display: block; margin-top: 5px;">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="form-actions">
@@ -87,4 +111,26 @@
         </div>
     </main>
 
+@endsection
+
+@section('extra-scripts')
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('preview-img');
+    const icon = document.querySelector('.image-placeholder i');
+    const text = document.querySelector('.image-placeholder .form-help-text');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            icon.style.display = 'none';
+            text.textContent = 'Imagem selecionada: ' + file.name;
+        }
+        reader.readAsDataURL(file);
+    }
+}
+</script>
 @endsection

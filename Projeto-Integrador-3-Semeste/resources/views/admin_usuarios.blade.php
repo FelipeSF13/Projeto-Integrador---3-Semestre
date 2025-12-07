@@ -28,6 +28,9 @@
                 <a href="{{ route('adm-cadastro') }}">Cadastrar Produtos</a>
             </nav>            
             <div class="admin-action-bar">
+                <a href="{{ route('adm-usuarios-criar') }}" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-user-plus"></i> Novo Administrador
+                </a>
                 <button class="icon-button"><i class="far fa-calendar-alt"></i></button> <button class="btn btn-secondary dropdown-toggle">Filtros <i class="fas fa-chevron-down"></i></button> 
             </div>
 
@@ -50,15 +53,18 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
                                 <td>
-                                    @if($user->id !== Auth::id())
-                                        <form action="{{ route('adm-usuarios-delete', $user->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.85em; background-color: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="return confirm('Tem certeza que deseja deletar este usuário?')">Deletar</button>
-                                        </form>
-                                    @else
-                                        <span style="color: #999; font-size: 0.9em;">Você</span>
-                                    @endif
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="{{ route('adm-usuarios-editar', $user->id) }}" class="btn btn-sm btn-secondary" style="padding: 4px 8px; font-size: 0.85em; background-color: #666; color: white; border: none; border-radius: 4px; text-decoration: none; display: inline-block;">Editar</a>
+                                        @if($user->id !== Auth::id())
+                                            <form action="{{ route('adm-usuarios-delete', $user->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.85em; background-color: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="return confirm('Tem certeza que deseja deletar este usuário?')">Deletar</button>
+                                            </form>
+                                        @else
+                                            <span style="color: #999; font-size: 0.9em; padding: 4px 8px;">Você</span>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty

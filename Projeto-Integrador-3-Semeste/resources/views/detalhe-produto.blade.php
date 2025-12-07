@@ -61,11 +61,17 @@
                 </div>
                 <div class="controls">
                     <div class="quantity-selector">
-                        <button>-</button>
+                        <button class="qty-btn qty-minus">-</button>
                         <span class="quantity-value">1</span>
-                        <button>+</button>
+                        <button class="qty-btn qty-plus">+</button>
                     </div>
-                    <button class="btn btn-dark add-to-cart-btn">Adicionar ao carrinho</button>
+                    <button class="btn btn-dark add-to-cart-btn" 
+                            data-product-id="{{ $product->id }}"
+                            data-product-name="{{ $product->name }}"
+                            data-product-price="{{ $product->price }}"
+                            data-product-img="{{ asset('img/' . $product->image) }}">
+                        Adicionar ao carrinho
+                    </button>
                 </div>
             </div>
         </section>
@@ -86,7 +92,7 @@
                             <button class="filter-btn">Filtrar</button>
                             <button class="filter-btn">Mais recentes</button>
                         </div>
-                        <button class="btn btn-dark" style="border-radius: 5px; padding: 10px 20px;">Deixar um comentário</button>
+                        <button class="btn btn-dark" id="open-comment-modal" style="border-radius: 5px; padding: 10px 20px;">Deixar um comentário</button>
                     </div>
                     <div class="comments-grid">
                         <div class="comment-card">
@@ -114,6 +120,37 @@
                 </div>
         </section>
 
+    </div>
+
+    <!-- Modal de Comentário -->
+    <div id="comment-modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal-container" style="max-width: 600px; background: white; border-radius: 12px; padding: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.5rem;">Deixar um comentário</h2>
+                <button id="close-comment-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <form id="comment-form">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Sua avaliação</label>
+                    <div class="rating-input" style="display: flex; gap: 0.5rem;">
+                        <span class="star-rating" data-value="1">⭐</span>
+                        <span class="star-rating" data-value="2">⭐</span>
+                        <span class="star-rating" data-value="3">⭐</span>
+                        <span class="star-rating" data-value="4">⭐</span>
+                        <span class="star-rating" data-value="5">⭐</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label for="comment-name" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Nome</label>
+                    <input type="text" id="comment-name" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label for="comment-text" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Comentário</label>
+                    <textarea id="comment-text" required rows="4" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark" style="width: 100%;">Enviar Comentário</button>
+            </form>
+        </div>
     </div>
 
 @include('partials.contact')

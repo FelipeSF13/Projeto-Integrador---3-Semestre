@@ -59,6 +59,16 @@
                         <input type="text" id="brand" name="brand" value="{{ old('brand', $product->brand) }}" placeholder="Ex: VERSACE, GUCCI, PRADA">
                     </div>
                     <div class="form-group">
+                        <label for="color">Cor</label>
+                        <select id="color" name="color">
+                            <option value="">Selecione uma cor</option>
+                            <option value="ouro" {{ old('color', $product->color) === 'ouro' ? 'selected' : '' }}>Ouro</option>
+                            <option value="prata" {{ old('color', $product->color) === 'prata' ? 'selected' : '' }}>Prata</option>
+                            <option value="neutro" {{ old('color', $product->color) === 'neutro' ? 'selected' : '' }}>Neutro</option>
+                        </select>
+                        @error('color')<span style="color: #d32f2f; font-size: 0.9em;">{{ $message }}</span>@enderror
+                    </div>
+                    <div class="form-group">
                         <label for="stock">Quantidade em Estoque *</label>
                         <input type="number" id="stock" name="stock" value="{{ old('stock', $product->stock) }}" required placeholder="Ex: 10" min="0"> 
                         @error('stock')<span style="color: #d32f2f; font-size: 0.9em;">{{ $message }}</span>@enderror

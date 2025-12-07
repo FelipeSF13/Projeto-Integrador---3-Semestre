@@ -88,35 +88,34 @@
                             elseif (str_contains($nameLower, 'pulseira')) { $type = 'pulseira'; }
                             elseif (str_contains($nameLower, 'corrente')) { $type = 'corrente'; }
                             elseif (str_contains($nameLower, 'relógio') || str_contains($nameLower, 'relogio')) { $type = 'relogio'; }
-
-                            $color = 'neutro';
-                            if (str_contains($nameLower, 'prata')) { $color = 'prata'; }
-                            elseif (str_contains($nameLower, 'ouro')) { $color = 'ouro'; }
                         @endphp
-                        <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card" data-productid="{{ $product->id }}" data-price="{{ $product->price }}" data-color="{{ $color }}" data-type="{{ $type }}" data-brand="{{ $product->brand }}">
-                            <img src="{{ asset('img/' . $product->image) }}" 
-                                 alt="{{ $product->name }}"
-                                 onerror="this.src='{{ asset('img/placeholder.svg') }}'">
-                            <h3>{{ $product->name }}</h3>
-                            <p class="price">
-                                <span class="sale">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
-                            </p>
-                            <p class="stock">Estoque: {{ $product->stock }}</p>
-                        </a>
+                        <div class="product-card" data-productid="{{ $product->id }}" data-price="{{ $product->price }}" data-color="{{ $product->color ?? 'neutro' }}" data-type="{{ $type }}" data-brand="{{ $product->brand }}">
+                            <a href="{{ route('produto', ['id' => $product->id]) }}" class="product-card-link">
+                                <img src="{{ asset('img/' . $product->image) }}" 
+                                     alt="{{ $product->name }}"
+                                     onerror="this.src='{{ asset('img/placeholder.svg') }}'">
+                                <h3>{{ $product->name }}</h3>
+                                <p class="price">
+                                    <span class="sale">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
+                                </p>
+                                <p class="stock">Estoque: {{ $product->stock }}</p>
+                            </a>
+                            <button class="btn btn-dark add-to-cart-btn-listing" 
+                                    data-product-id="{{ $product->id }}"
+                                    data-product-name="{{ $product->name }}"
+                                    data-product-price="{{ $product->price }}"
+                                    data-product-img="{{ asset('img/' . $product->image) }}">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
                     @empty
                         <p style="grid-column: 1 / -1; text-align: center;">Nenhum produto disponível nesta categoria.</p>
                     @endforelse
                 </div>
 
-                <nav class="pagination">
-                    <a href="#" class="page-link">&larr; Voltar</a>
-                    <a href="#" class="page-link active">1</a>
-                    <a href="#" class="page-link">2</a>
-                    <a href="#" class="page-link">3</a>
-                    <a href="#" class="page-link">...</a>
-                    <a href="#" class="page-link">10</a>
-                    <a href="#" class="page-link">Próximo &rarr;</a>
-                </nav>
+                <div class="pagination">
+                    {{ $products->withQueryString()->links() }}
+                </div>
             </section>
         </div>
     </main>

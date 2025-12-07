@@ -2,6 +2,25 @@
 @section('title', 'Pagamento - Joalheria')
 @section('content')
 
+    @if(!auth()->check())
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="{{ route('index') }}">Página Inicial</a>
+                <span>&gt;</span>
+                <span class="current">Pagamento</span>
+            </nav>
+            
+            <div style="text-align: center; padding: 60px 20px;">
+                <h1 class="section-title">Acesso Negado</h1>
+                <p class="text-secondary" style="font-size: 16px; margin-bottom: 30px;">
+                    Para finalizar a compra, você precisa estar logado na sua conta.
+                </p>
+                <a href="{{ route('login') }}" class="btn btn-dark">Fazer Login</a>
+                <span class="auth-divider">ou</span>
+                <a href="{{ route('cadastro') }}" class="btn btn-outline">Criar Conta</a>
+            </div>
+        </div>
+    @else
     <div class="container">
         <button class="btn-back" data-history-back style="margin-bottom: 15px;">Voltar</button>
         <nav class="breadcrumb">
@@ -53,8 +72,8 @@
                         <span id="subtotal" class="value">R$565,89</span>
                     </div>
                     <div class="summary-row">
-                        <span id="discount-label">Desconto (-20%)</span> 
-                        <span id="discount" class="discount">-R$113,55</span>
+                        <span id="discount-label">Desconto</span> 
+                        <span id="discount" class="discount">-R$0,00</span>
                     </div>
                     <div class="summary-row">
                         <span>Frete</span>
@@ -111,6 +130,7 @@
 
             </aside>
         </div>
-    </main>
-@include('partials.contact')
+    </div>
+    @include('partials.contact')
+    @endif
 @endsection

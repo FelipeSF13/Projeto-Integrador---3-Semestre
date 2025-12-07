@@ -48,6 +48,8 @@
   position: absolute;
   left: 0.75rem;
   color: var(--admin-secondary-text);
+  pointer-events: none;
+  z-index: 1;
 }
 .admin-search input[type="search"] {
   padding: 0.4rem 0.75rem 0.4rem 2.25rem; /* Espaço para o ícone */
@@ -55,6 +57,11 @@
   border-radius: 0.25rem;
   background-color: var(--admin-bg-color); /* Fundo sutil */
   min-width: 200px; /* Largura mínima */
+}
+.admin-search input[type="search"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: white;
 }
 
 .icon-button { /* Estilo base para botões só com ícone */

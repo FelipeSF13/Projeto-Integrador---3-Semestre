@@ -69,11 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Adiciona um produto ao carrinho (ou incrementa a quantidade).
      * Esta função será chamada pelos botões "Adicionar".
      */
-    const addItemToCart = (productId) => {
-        // ATENÇÃO: Esta é uma simulação.
-        // No seu código real, você buscaria o produto, pegaria o preço, etc.
-        // Por enquanto, vamos apenas simular que adicionamos 1 item.
-        
+    const addItemToCart = (productId, productData = null) => {
         let cart = getCartFromStorage();
 
         // Verifica se o item já existe
@@ -82,15 +78,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (existingItem) {
             existingItem.quantity++; // Se existe, só aumenta a quantidade
         } else {
-            // Se não existe, adiciona um novo (simulado)
-            // No mundo real, você pegaria os dados do produto (nome, preço, img)
-            cart.push({
-                id: productId,
-                name: `Produto ${productId}`, // Simulado
-                price: 99.99, // Simulado
-                img: 'img/anel1.png', // Simulado
-                quantity: 1
-            });
+            // Se productData não foi passado, tenta buscar do botão clicado
+            if (!productData) {
+                const button = document.querySelector(`[data-product-id="${productId}"]`);
+                if (button) {
+                    productData = {
+                        id: productId,
+                        name: button.dataset.productName || `Produto ${productId}`,
+                        price: parseFloat(button.dataset.productPrice) || 0,
+                        img: button.dataset.productImg || 'img/placeholder.svg',
+                        quantity: 1
+                    };
+                } else {
+                    // Fallback se não encontrar o botão
+                    productData = {
+                        id: productId,
+                        name: `Produto ${productId}`,
+                        price: 0,
+                        img: 'img/placeholder.svg',
+                        quantity: 1
+                    };
+                }
+            }
+            
+            cart.push(productData);
         }
 
         saveCartToStorage(cart); // Salva o carrinho atualizado
@@ -106,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 cartCountBadge.classList.remove('pulse-animation');
             }, 300); // Duração da animação CSS
         }
+        
+        console.log('Produto adicionado ao carrinho:', productData);
+        console.log('Carrinho atual:', cart);
     };
 
     /**
@@ -175,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const productGridContainer = document.getElementById('product-grid-container');
     const loadMoreBtn = document.getElementById('load-more-btn');
 
-    if (productGridContainer && loadMoreBtn) { // Só executa se estiver na página inicial
+    if (productGridContainer && loadMoreBtn && !productGridContainer.dataset.inlineLoadMore) { // Só executa se estiver na página inicial e sem lógica inline
         console.log("Home page logic loaded."); // Debug
 
         const allProducts = [ /* ... Seu array de produtos da Home aqui ... */
@@ -281,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartPage) {
         console.log("Cart page logic loaded."); // Debug
         let isCouponApplied = false;
-        const WELCOME_COUPON_CODE = "BEMVINDO20";
+        const WELCOME_COUPON_CODE = "PRIMEIRACOMPRA";
         const cartItemsContainer = cartPage.querySelector('.cart-items');
         const couponForm = cartPage.querySelector('#coupon-form');
         const couponInput = cartPage.querySelector('#coupon-input');
@@ -450,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (code === WELCOME_COUPON_CODE) {
                     isCouponApplied = true;
-                    couponMessage.textContent = "Cupom 'BEMVINDO20' aplicado!";
+                    couponMessage.textContent = "Cupom 'PRIMEIRACOMPRA' aplicado! 20% de desconto.";
                     couponMessage.className = "coupon-message success";
                     couponInput.disabled = true;
                     event.target.querySelector('button').disabled = true;
@@ -532,32 +546,161 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (productPage) { // Verifica se é a página de detalhe
         console.log("Product detail page logic loaded.");
+        
         // Galeria
         const mainImage = productPage.querySelector('.main-image img');
         const thumbnails = productPage.querySelectorAll('.thumbnail-images img');
-        if (mainImage && thumbnails.length > 0) { thumbnails.forEach(thumb => { thumb.addEventListener('click', () => { mainImage.src = thumb.src; }); }); }
+        if (mainImage && thumbnails.length > 0) { 
+            thumbnails.forEach(thumb => { 
+                thumb.addEventListener('click', () => { 
+                    mainImage.src = thumb.src; 
+                }); 
+            }); 
+        }
+        
         // Tabs
         const tabLinks = document.querySelectorAll('.tabs-nav .tab-link');
         const tabPanes = document.querySelectorAll('.tabs-content .tab-pane');
         if (tabLinks.length > 0 && tabPanes.length > 0) {
-            tabLinks.forEach(link => { link.addEventListener('click', () => { /* ... código das tabs ... */ }); });
+            tabLinks.forEach(link => { 
+                link.addEventListener('click', () => { 
+                    const targetTab = link.dataset.tab;
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    link.classList.add('active');
+                    document.getElementById(targetTab)?.classList.add('active');
+                }); 
+            });
         }
         
-        // --- ADIÇÃO AQUI (Página de Detalhe) ---
-        // Adicionar ao carrinho na página de detalhe
-        const addToCartBtnDetail = productPage.querySelector('#add-to-cart-detail-btn'); // Assumindo que o botão principal tem este ID
+        // Quantity selector
+        const qtyValue = productPage.querySelector('.quantity-value');
+        const qtyPlus = productPage.querySelector('.qty-plus');
+        const qtyMinus = productPage.querySelector('.qty-minus');
+        
+        if (qtyValue && qtyPlus && qtyMinus) {
+            qtyPlus.addEventListener('click', (e) => {
+                e.preventDefault();
+                let current = parseInt(qtyValue.textContent);
+                qtyValue.textContent = current + 1;
+            });
+            
+            qtyMinus.addEventListener('click', (e) => {
+                e.preventDefault();
+                let current = parseInt(qtyValue.textContent);
+                if (current > 1) {
+                    qtyValue.textContent = current - 1;
+                }
+            });
+        }
+        
+        // Add to cart button na página de detalhe
+        const addToCartBtnDetail = productPage.querySelector('.add-to-cart-btn');
         if (addToCartBtnDetail) {
-            addToCartBtnDetail.addEventListener('click', () => {
+            addToCartBtnDetail.addEventListener('click', (e) => {
+                e.preventDefault();
                 const productId = addToCartBtnDetail.dataset.productId;
+                const quantity = parseInt(qtyValue?.textContent || '1');
                 
-                console.log(`Adicionando ${productId} ao carrinho (via Pág. Detalhe)`);
-                addItemToCart(productId); // Chama a função global
+                console.log(`Adicionando ${quantity}x produto ${productId} ao carrinho`);
+                
+                // Adiciona a quantidade especificada
+                for (let i = 0; i < quantity; i++) {
+                    addItemToCart(productId);
+                }
 
                 // Feedback
+                const originalText = addToCartBtnDetail.textContent;
                 addToCartBtnDetail.textContent = 'Adicionado!';
+                addToCartBtnDetail.style.background = 'var(--color-verified-green)';
                 setTimeout(() => {
-                    addToCartBtnDetail.textContent = 'Adicionar ao Carrinho';
+                    addToCartBtnDetail.textContent = originalText;
+                    addToCartBtnDetail.style.background = '';
                 }, 1500);
+            });
+        }
+
+        // Comment modal
+        const commentModalOverlay = document.getElementById('comment-modal-overlay');
+        const openCommentBtn = document.getElementById('open-comment-modal');
+        const closeCommentBtn = document.getElementById('close-comment-modal');
+        const commentForm = document.getElementById('comment-form');
+        const commentsGrid = document.querySelector('.comments-grid');
+        
+        if (openCommentBtn && commentModalOverlay) {
+            openCommentBtn.addEventListener('click', () => {
+                commentModalOverlay.style.display = 'flex';
+                commentModalOverlay.style.alignItems = 'center';
+                commentModalOverlay.style.justifyContent = 'center';
+            });
+        }
+        
+        if (closeCommentBtn && commentModalOverlay) {
+            closeCommentBtn.addEventListener('click', () => {
+                commentModalOverlay.style.display = 'none';
+            });
+            
+            commentModalOverlay.addEventListener('click', (e) => {
+                if (e.target === commentModalOverlay) {
+                    commentModalOverlay.style.display = 'none';
+                }
+            });
+        }
+        
+        // Star rating selection
+        let selectedRating = 0;
+        const starRatings = document.querySelectorAll('.star-rating');
+        starRatings.forEach(star => {
+            star.style.cursor = 'pointer';
+            star.style.fontSize = '1.5rem';
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.value);
+                starRatings.forEach((s, idx) => {
+                    s.style.opacity = idx < selectedRating ? '1' : '0.3';
+                });
+            });
+        });
+        
+        // Comment form submission
+        if (commentForm && commentsGrid) {
+            commentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('comment-name').value;
+                const text = document.getElementById('comment-text').value;
+                
+                if (!selectedRating) {
+                    alert('Por favor, selecione uma avaliação');
+                    return;
+                }
+                
+                // Generate stars HTML
+                let starsHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    starsHTML += '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="' + (i < selectedRating ? 'currentColor' : 'none') + '" stroke="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>';
+                }
+                
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-card';
+                newComment.innerHTML = `
+                    <div class="user-info">
+                        <div class="user"><span>${name}</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg></div>
+                        <span class="options">...</span>
+                    </div>
+                    <div class="rating">${starsHTML}</div>
+                    <p class="comment-body">"${text}"</p>
+                    <p class="comment-date">Postado em ${new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                `;
+                
+                commentsGrid.insertBefore(newComment, commentsGrid.firstChild);
+                
+                // Reset form
+                commentForm.reset();
+                selectedRating = 0;
+                starRatings.forEach(s => s.style.opacity = '1');
+                commentModalOverlay.style.display = 'none';
+                
+                alert('Comentário adicionado com sucesso!');
             });
         }
 
@@ -789,20 +932,48 @@ document.addEventListener('DOMContentLoaded', () => {
         // Lógica para o botão "Continue" (mostrar modal)
         if (paymentForm && overlay && modal) {
             paymentForm.addEventListener('submit', (event) => {
-                event.preventDefault(); console.log("Payment form submitted!");
-                if (timerInterval) { clearInterval(timerInterval); console.log("Timer stopped on payment submission."); } // Para o timer
+                event.preventDefault();
+                console.log("Payment form submitted!");
                 
+                // Para o timer
+                if (timerInterval) { 
+                    clearInterval(timerInterval); 
+                    console.log("Timer stopped on payment submission."); 
+                }
+                
+                // Captura dados do pedido antes de limpar
+                const cart = getCartFromStorage();
+                const orderSummary = {
+                    items: cart,
+                    subtotal: subtotalElCheckout?.textContent || 'R$0,00',
+                    discount: discountElCheckout?.textContent || 'R$0,00',
+                    shipping: shippingElCheckout?.textContent || 'R$0,00',
+                    total: totalElCheckout?.textContent || 'R$0,00',
+                    date: new Date().toLocaleString('pt-BR'),
+                    orderNumber: '#' + Math.random().toString(36).substr(2, 9).toUpperCase()
+                };
+                
+                console.log('Pedido realizado:', orderSummary);
+                
+                // Limpa carrinho
                 saveCartToStorage([]); 
-                updateCartCounter(0); // Zera o contador do header
+                updateCartCounter(0);
 
-                overlay.classList.add('active'); modal.classList.add('active');
-                console.log("Modal and overlay should be active.");
+                // Mostra modal de sucesso
+                overlay.classList.add('active');
+                modal.classList.add('active');
+                
+                // Atualiza texto do modal
+                const modalTitle = modal.querySelector('h3');
+                if (modalTitle) {
+                    modalTitle.innerHTML = `Compra realizada com sucesso!<br><small style="font-size: 0.8em; font-weight: normal;">Pedido ${orderSummary.orderNumber}</small>`;
+                }
                 
                 setTimeout(() => {
-                    overlay.classList.remove('active'); modal.classList.remove('active');
-                    console.log("Modal and overlay hidden after timeout.");
-                    window.location.href = 'index.html'; // Redireciona para a Home
-                }, 3000);
+                    overlay.classList.remove('active');
+                    modal.classList.remove('active');
+                    window.location.href = '/'; // Redireciona para a Home
+                }, 4000);
             });
         } else { console.error("Could not attach payment submit listener..."); }
 
@@ -820,263 +991,155 @@ document.addEventListener('DOMContentLoaded', () => {
     if (priceSlider && priceValueDisplay) {
         console.log("Listing page logic (slider, filter, pagination) loaded.");
 
-        // --- 1. Referências aos Elementos da Página ---
-        const listingGrid = document.getElementById('listing-product-grid'); 
-        const applyFiltersBtn = document.getElementById('apply-filters-btn'); 
-        const paginationContainer = document.querySelector('.pagination-container') || document.querySelector('.pagination'); // Usa a classe do seu HTML feminino se existir
-        const filterCountDisplay = document.getElementById('filter-count-display'); 
-        const categoryFilters = document.querySelectorAll('.listing-sidebar .filter-item'); // Adapta ao seu HTML feminino
-        const colorFilters = document.querySelectorAll('.listing-sidebar .color-swatch'); 
+        // --- 1. Referências reais dos elementos na página ---
+        const listingGrid = document.getElementById('product-listing');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const paginationContainer = document.querySelector('.pagination-container') || document.querySelector('.pagination');
+        const filterCountDisplay = document.getElementById('filter-counter');
+        const categoryFilters = document.querySelectorAll('.listing-sidebar .filter-item');
+        const colorFilters = document.querySelectorAll('.listing-sidebar .color-swatch');
+        const brandFilters = document.querySelectorAll('#brand-filters .filter-item');
 
-        // --- 2. Dados (Simulação) ---
-        const allListingProducts = [
-            // Página 1
-            { id: 101, name: 'Anel de Ouro Delicado', price: '1200.50', original: null, img: 'img/anel1.png', rating: 4, category: 'anel' },
-            { id: 102, name: 'Pulseira Ouro Rosé', price: '2500.00', original: null, img: 'img/anel2.png', rating: 5, category: 'pulseira' },
-            { id: 103, name: 'Relógio Prata Clássico', price: '800.00', original: '1000.00', img: 'img/colar1.png', rating: 4, category: 'relogio' },
-            { id: 104, name: 'Corrente Fina Ouro', price: '1800.00', original: null, img: 'img/colar3.png', rating: 3, category: 'corrente' },
-            { id: 105, name: 'Anel Solitário Prata', price: '450.00', original: null, img: 'img/colar4.png', rating: 5, category: 'anel' },
-            { id: 106, name: 'Pulseira de Berloques', price: '750.00', original: null, img: 'img/anel1.png', rating: 4, category: 'pulseira' },
-            { id: 107, name: 'Relógio Dourado Moderno', price: '3200.00', original: null, img: 'img/anel2.png', rating: 5, category: 'relogio' },
-            { id: 108, name: 'Corrente Grossa Prata', price: '950.00', original: '1100.00', img: 'img/colar1.png', rating: 4, category: 'corrente' },
-            { id: 109, name: 'Anel com Pedra Verde', price: '2100.00', original: null, img: 'img/colar3.png', rating: 5, category: 'anel' },
-            // Página 2
-            { id: 110, name: 'Pulseira Masculina Couro', price: '300.00', original: null, img: 'img/colar4.png', rating: 4, category: 'pulseira' },
-            { id: 111, name: 'Relógio Smartwatch', price: '1600.00', original: null, img: 'img/anel1.png', rating: 4, category: 'relogio' },
-            { id: 112, name: 'Corrente Ouro Branco', price: '4500.00', original: null, img: 'img/anel2.png', rating: 5, category: 'corrente' },
-            { id: 113, name: 'Anel de Formatura', price: '3800.00', original: '4200.00', img: 'img/colar1.png', rating: 5, category: 'anel' },
-            { id: 114, name: 'Pulseira Rígida Prata', price: '600.00', original: null, img: 'img/colar3.png', rating: 4, category: 'pulseira' },
-            { id: 115, name: 'Relógio Minimalista', price: '1100.00', original: null, img: 'img/colar4.png', rating: 3, category: 'relogio' },
-            { id: 116, name: 'Corrente com Pingente', price: '1350.00', original: null, img: 'img/anel1.png', rating: 4, category: 'corrente' },
-            { id: 117, name: 'Anel Aparador Ouro', price: '900.00', original: '1000.00', img: 'img/anel2.png', rating: 5, category: 'anel' },
-            { id: 118, name: 'Pulseira Infantil Ouro', price: '480.00', original: null, img: 'img/colar1.png', rating: 4, category: 'pulseira' },
-            // Página 3
-            { id: 119, name: 'Relógio de Bolso Vintage', price: '5000.00', original: null, img: 'img/colar3.png', rating: 5, category: 'relogio' },
-            { id: 120, name: 'Corrente Italiana', price: '2900.00', original: null, img: 'img/colar4.png', rating: 5, category: 'corrente' },
-            { id: 121, name: 'Anel de Noivado', price: '9500.00', original: null, img: 'img/anel1.png', rating: 5, category: 'anel' },
-            { id: 122, name: 'Pulseira de Prata Grossa', price: '1150.00', original: '1300.00', img: 'img/anel2.png', rating: 4, category: 'pulseira' },
-            { id: 123, name: 'Relógio Esportivo', price: '720.00', original: null, img: 'img/colar1.png', rating: 3, category: 'relogio' },
-            { id: 124, name: 'Corrente de Prata Fina', price: '350.00', original: null, img: 'img/colar3.png', rating: 4, category: 'corrente' },
-            { id: 125, name: 'Anel Ouro Branco', price: '6100.00', original: null, img: 'img/colar4.png', rating: 5, category: 'anel' },
-            { id: 126, name: 'Pulseira de Pérolas', price: '2200.00', original: null, img: 'img/anel1.png', rating: 5, category: 'pulseira' },
-            { id: 127, name: 'Relógio Digital', price: '250.00', original: '350.00', img: 'img/anel2.png', rating: 2, category: 'relogio' },
-        ];
+        // Snapshot dos cards já renderizados no Blade
+        // const productCards = listingGrid ? Array.from(listingGrid.querySelectorAll('.product-card')) : [];
 
-        const processedProducts = allListingProducts.map(p => ({
-            ...p,
-            // Ajusta para usar o preço numérico já calculado se disponível, senão calcula
-            numericPrice: typeof p.numericPrice === 'number' ? p.numericPrice : parseFloat(p.price.replace('.', '').replace(',', '.')),
-            originalNumeric: p.original ? (typeof p.originalNumeric === 'number' ? p.originalNumeric : parseFloat(p.original.replace('.', '').replace(',', '.'))) : null
-        }));
-        
-        // --- 3. Estado da Paginação e Filtros ---
-        let currentPage = 1;
-        const itemsPerPage = 9; // Ajuste para 9 se quiser 3x3
-        
+        // Estado dos filtros atuais
         let currentFilters = {
-            price: priceSlider ? parseFloat(priceSlider.max) : 10000, // Valor padrão se slider não existir
-            category: null, 
-            color: null 
+            price: priceSlider ? parseFloat(priceSlider.value) : 10000,
+            category: null,
+            color: null,
+            brand: null
         };
 
-        // --- 4. Funções de Renderização ---
-        const formatSliderPrice = (value) => { return `R$${Number(value).toLocaleString('pt-BR')}`; }
-        
-        // Função para desenhar um card de produto (ADAPTADA ao HTML feminino)
-        function displayListingProduct(product) {
-            // Adaptação: Usa formatCurrency que já lida com números
-            const priceFormatted = formatCurrency(product.numericPrice);
-            const originalFormatted = product.originalNumeric ? formatCurrency(product.originalNumeric) : '';
+        const formatSliderPrice = (value) => `R$${Number(value).toLocaleString('pt-BR')}`;
 
-            const productHTML = `
-                <a href="detalhe-produto.html?id=${product.id}" class="product-card">
-                    <img src="${product.img}" alt="${product.name}">
-                    ${product.original ? `<span class="badge discount-badge">${Math.round((1 - product.numericPrice / product.originalNumeric) * 100)}%</span>` : ''} 
-                    <h3>${product.name}</h3>
-                    <div class="product-rating">${generateStarsHTML(product.rating)}</div> {/* Adicionado Rating */}
-                    <p class="price">
-                        <span class="sale">${priceFormatted}</span>
-                        ${originalFormatted ? `<span class="original">${originalFormatted}</span>` : ''}
-                    </p>
-                    {/* Botão Adicionar (opcional, pode ser adicionado com CSS no hover) */}
-                    {/* <button class="btn add-to-cart-btn" data-product-id="${product.id}">Adicionar</button> */}
-                </a>`;
-            if(listingGrid) listingGrid.insertAdjacentHTML('beforeend', productHTML);
-        }
+        function applyFilterVisibility() {
+            if (!listingGrid) return;
 
-        // Função para atualizar os links de paginação (ADAPTADA ao HTML feminino)
-        function updatePagination(totalPages, totalProducts) {
-            if (!paginationContainer) return;
-            paginationContainer.innerHTML = ''; 
-            
-            if (totalProducts === 0 || totalPages <= 1) return; // Não mostra se não houver produtos ou só 1 página
+            const maxPrice = priceSlider ? parseFloat(priceSlider.value) : 10000;
+            let visibleCount = 0;
 
-            // Botão Voltar
-            paginationContainer.insertAdjacentHTML('beforeend', 
-                `<a href="#" class="page-link ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">&larr; Voltar</a>`
-            );
+            // Reseleciona os cards a cada chamada (para pegar os cards da página atual)
+            const productCards = Array.from(listingGrid.querySelectorAll('.product-card'));
 
-            // Links das Páginas
-                // Lógica simplificada para mostrar algumas páginas
-                let startPage = Math.max(1, currentPage - 1);
-                let endPage = Math.min(totalPages, currentPage + 1);
-                if (currentPage === 1) endPage = Math.min(totalPages, 3);
-                if (currentPage === totalPages) startPage = Math.max(1, totalPages - 2);
+            productCards.forEach(card => {
+                const cardPrice = parseFloat(card.dataset.price || '0');
+                const cardCategory = (card.dataset.type || '').toLowerCase();
+                const cardColor = (card.dataset.color || '').toLowerCase();
+                const cardBrand = (card.dataset.brand || '').toUpperCase();
 
-            if (startPage > 1) {
-                paginationContainer.insertAdjacentHTML('beforeend', `<a href="#" class="page-link" data-page="1">1</a>`);
-                if (startPage > 2) {
-                    paginationContainer.insertAdjacentHTML('beforeend', `<span class="page-dots">...</span>`);
-                }
-            }
+                const priceMatch = cardPrice <= maxPrice;
+                const categoryMatch = !currentFilters.category || cardCategory === currentFilters.category;
+                const colorMatch = !currentFilters.color || cardColor === currentFilters.color;
+                const brandMatch = !currentFilters.brand || cardBrand === currentFilters.brand;
 
-            for (let i = startPage; i <= endPage; i++) {
-                paginationContainer.insertAdjacentHTML('beforeend', 
-                    `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`
-                );
-            }
-
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    paginationContainer.insertAdjacentHTML('beforeend', `<span class="page-dots">...</span>`);
-                }
-                paginationContainer.insertAdjacentHTML('beforeend', `<a href="#" class="page-link" data-page="${totalPages}">${totalPages}</a>`);
-            }
-            
-            // Botão Próximo
-            paginationContainer.insertAdjacentHTML('beforeend', 
-                `<a href="#" class="page-link ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}">Próximo &rarr;</a>`
-            );
-        }
-        
-        // --- 5. Função Principal de Filtragem e Renderização ---
-        function renderFilteredProducts() {
-            if (!listingGrid) {
-                console.error("Elemento '.product-grid.listing' não encontrado!");
-                return;
-            }
-
-            // 1. Obter valores dos filtros
-            currentFilters.price = priceSlider ? parseFloat(priceSlider.value) : 10000;
-            // category e color ainda não implementados
-            
-            // 2. Filtrar
-            const filteredProducts = processedProducts.filter(product => {
-                const priceMatch = product.numericPrice <= currentFilters.price;
-                const categoryMatch = !currentFilters.category || product.category === currentFilters.category;
-                return priceMatch && categoryMatch; 
+                const show = priceMatch && categoryMatch && colorMatch && brandMatch;
+                card.style.display = show ? 'flex' : 'none';
+                if (show) visibleCount += 1;
             });
 
-            // 3. Paginar
-            const totalProducts = filteredProducts.length;
-            const totalPages = Math.ceil(totalProducts / itemsPerPage);
-            
-            if (currentPage > totalPages && totalPages > 0) currentPage = totalPages; 
-            else if (totalPages === 0) currentPage = 1;
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageProducts = filteredProducts.slice(startIndex, endIndex);
-
-            // 4. Atualizar UI
-            listingGrid.innerHTML = ''; 
-            
-            if (pageProducts.length > 0) {
-                pageProducts.forEach(displayListingProduct);
-            } else {
-                listingGrid.innerHTML = '<p class="empty-filter-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Nenhum produto encontrado com estes filtros.</p>'; // Mensagem estilizada inline como fallback
-            }
-
-            // 5. Atualizar contagem
+            // Atualiza contador
             if (filterCountDisplay) {
-                const startItem = totalProducts === 0 ? 0 : startIndex + 1;
-                const endItem = Math.min(endIndex, totalProducts);
-                filterCountDisplay.textContent = `Filtrado ${startItem}–${endItem} a ${totalProducts} Produtos`;
+                filterCountDisplay.textContent = `${visibleCount} produtos encontrados`;
             }
-            
-            // 6. Atualizar Paginação
-            updatePagination(totalPages, totalProducts);
+
+            // Mensagem de vazio
+            const emptyMsg = listingGrid.querySelector('.empty-filter-message');
+            if (visibleCount === 0) {
+                if (!emptyMsg) {
+                    listingGrid.insertAdjacentHTML('beforeend', '<p class="empty-filter-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Nenhum produto encontrado com estes filtros.</p>');
+                }
+            } else if (emptyMsg) {
+                emptyMsg.remove();
+            }
         }
 
-        // --- 6. Event Listeners ---
+        // --- Listeners ---
         if(priceSlider) {
             priceSlider.addEventListener('input', (event) => {
                 if(priceValueDisplay) priceValueDisplay.textContent = formatSliderPrice(event.target.value);
+                applyFilterVisibility();
             });
         }
-        
+
         if (applyFiltersBtn) {
             applyFiltersBtn.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                currentPage = 1; 
-                console.log("Aplicando filtros...");
-                renderFilteredProducts();
+                e.preventDefault();
+                applyFilterVisibility();
             });
         }
-        
-        // Listener Categoria (Adaptado)
-        if(categoryFilters.length > 0) {
+
+        // Categoria
+        if (categoryFilters.length > 0) {
             categoryFilters.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    categoryFilters.forEach(l => l.classList.remove('active')); // Assume classe 'active' para indicar seleção
+                    categoryFilters.forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
-                    // Pega a categoria do texto dentro do primeiro span
-                    const categoryText = link.querySelector('span:first-child')?.textContent?.toLowerCase()?.trim(); 
-                    currentFilters.category = categoryText; 
-                    // Se não houver botão "Aplicar", filtra direto:
-                    // currentPage = 1;
-                    // renderFilteredProducts();
+                    const categoryText = link.dataset.category || link.querySelector('span:first-child')?.textContent?.toLowerCase()?.trim();
+                    currentFilters.category = categoryText === 'todos' ? null : categoryText;
+                    applyFilterVisibility();
                 });
             });
         }
-        
-        // Listener Paginação (Adaptado)
-        if (paginationContainer) {
-            paginationContainer.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = e.target.closest('.page-link');
-                
-                if (target && !target.classList.contains('disabled') && !target.classList.contains('active')) {
-                    const newPage = parseInt(target.dataset.page); // Assume data-page nos links
-                    if (!isNaN(newPage) && newPage > 0) {
-                        currentPage = newPage;
-                        renderFilteredProducts();
-                        listingGrid.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Rola para topo da grid
-                    }
-                }
+
+        // Cor
+        if (colorFilters.length > 0) {
+            colorFilters.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    colorFilters.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    const color = btn.dataset.color || null;
+                    currentFilters.color = color;
+                    applyFilterVisibility();
+                });
             });
         }
 
-        // Listener Adicionar Carrinho (Adaptado - Adiciona ao grid)
-        if (listingGrid) {
-            listingGrid.addEventListener('click', function(event) {
-                // Procura por um botão add-to-cart DENTRO do card clicado, se existir
-                const addToCartButton = event.target.closest('.add-to-cart-btn');
-                if (addToCartButton) { // Se clicou no botão (ou ele foi adicionado dinamicamente)
-                    event.preventDefault(); // Impede link se botão estiver dentro de <a>
-                    const productId = addToCartButton.dataset.productId;
-                    if (productId) {
-                        addItemToCart(productId); 
-                        addToCartButton.textContent = 'Adicionado!';
-                        addToCartButton.classList.add('added');
-                        setTimeout(() => {
-                            addToCartButton.textContent = 'Adicionar';
-                            addToCartButton.classList.remove('added');
-                        }, 1500);
-                    }
-                } else if (event.target.closest('.product-card')) {
-                    // Se clicou no card mas não no botão, deixa o link funcionar (ir para detalhe)
-                    // console.log("Card clicado, navegando...");
-                }
+        // Marca
+        if (brandFilters.length > 0) {
+            brandFilters.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    brandFilters.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const brand = btn.dataset.brand || null;
+                    currentFilters.brand = brand === 'todos' ? null : brand;
+                    applyFilterVisibility();
+                });
             });
         }
 
-        // --- 7. Carga Inicial ---
+        // Carga inicial
         if(priceValueDisplay && priceSlider) {
             priceValueDisplay.textContent = formatSliderPrice(priceSlider.value);
         }
-        renderFilteredProducts(); // Chama a função 1x para carregar a página
+        applyFilterVisibility();
+        
+        // Event listener para botões de adicionar ao carrinho nas listagens
+        if (listingGrid) {
+            listingGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart-btn-listing')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const btn = e.target;
+                    const productId = btn.dataset.productId;
+                    
+                    addItemToCart(productId);
+                    
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Adicionado!';
+                    btn.style.background = 'var(--color-verified-green)';
+                    
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                    }, 1500);
+                }
+            });
+        }
     }
     // --- FIM DA LÓGICA DE FILTRAGEM ---
 

@@ -1,20 +1,19 @@
 <header class="admin-header">
     <div class="admin-header-content container">
-        <nav aria-label="breadcrumb" class="admin-breadcrumbs">
-            <ol>
-                <li><a href="{{ route('adm-dashboard') }}">Painel</a></li> 
-                <li aria-current="page">@yield('breadcrumb', 'Dashboard')</li>
-            </ol>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button class="btn-back" data-history-back>Voltar</button>
+            <nav aria-label="breadcrumb" class="admin-breadcrumbs">
+                <ol>
+                    <li><a href="{{ route('adm-dashboard') }}">Painel</a></li> 
+                    <li aria-current="page">@yield('breadcrumb', 'Dashboard')</li>
+                </ol>
+            </nav>
+        </div>
         <div class="admin-header-right">
-            <div class="admin-search">
+            <form action="{{ route('adm-search') }}" method="GET" class="admin-search">
                 <i class="fas fa-search"></i>
-                <input type="search" placeholder="Pesquisar">
-            </div>
-            <button class="icon-button notifications" aria-label="Notificações">
-                <i class="fas fa-bell"></i>
-                <span class="badge notification-badge">{{ $lowStockProducts ?? 0 }}</span> 
-            </button>
+                <input type="search" name="q" placeholder="Pesquisar produtos, usuários..." value="{{ request('q') }}">
+            </form>
             <div class="user-profile">
                 <span class="user-initial">{{ substr(Auth::user()->name, 0, 1) }}</span>
                 <span class="user-name">{{ Auth::user()->name }}</span>

@@ -21,7 +21,7 @@ class ProductController extends Controller
             $query->where('brand', request('brand'));
         }
         
-        $products = $query->get();
+        $products = $query->paginate(12)->appends(request()->query());
         $selectedBrand = request('brand');
         return view('feminino', compact('products', 'selectedBrand'));
     }
@@ -35,7 +35,7 @@ class ProductController extends Controller
             $query->where('brand', request('brand'));
         }
         
-        $products = $query->get();
+        $products = $query->paginate(12)->appends(request()->query());
         $selectedBrand = request('brand');
         return view('masculino', compact('products', 'selectedBrand'));
     }
